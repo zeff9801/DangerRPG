@@ -33,7 +33,6 @@
  *
  * For more details, see https://docs.gradle.org/8.0.1/userguide/java_library_plugin.html#sec:java_library_configurations_graph
  */
-
 dependencies {
     //Dev-only deps
     compileOnly("org.projectlombok:lombok:[1.18.24,1.19)") {
@@ -50,7 +49,6 @@ dependencies {
     implementation "curse.maven:golem-tweaks-746411:4722766-deobf-sources-api"
     implementation "curse.maven:fplib-665627:4824788-deobf-sources-api"
     implementation "curse.maven:witchery-69673:2234410-deobf-sources-api"
-
 }
 
 // this fix is required for the good function of the mod DangerRPG
@@ -60,5 +58,34 @@ jar {
         attributes 'FMLAT': 'dangerrpg_at.cfg'
         attributes 'FMLCorePlugin': 'mixac1.dangerrpg.hook.RPGHookLoader'
         attributes 'FMLCorePluginContainsFMLMod': 'true'
+    }
+}
+
+tasks.register('countJavaLines') {
+    group = 'Reporting'
+    description = 'Show number of lines in each .java file and total number of lines'
+    doLast {
+        def totalLines = 0
+        def javaFiles = fileTree(dir: 'src/main/java', includes: ['**/*.java'])
+        def fileLineCounts = []
+        javaFiles.each { file ->
+            def lineCount = file.readLines().size()
+            totalLines += lineCount
+            fileLineCounts.add("${file.name}: ${lineCount}")
+        }
+        fileLineCounts.sort { a, b ->
+            def countA = a.split(":")[1].trim().toInteger()
+            def countB = b.split(":")[1].trim().toInteger()
+            return countB <=> countA
+        }
+        def logFile = new File('countJavaLines.log')
+        logFile.withWriter { writer ->
+            writer.writeLine("Total number of lines: ${totalLines}")
+            fileLineCounts.each { line ->
+                writer.writeLine("${line} lignes")
+            }
+        }
+        println "Total number of lines: ${totalLines}"
+        fileLineCounts.each { println "${it} lignes" }
     }
 }
