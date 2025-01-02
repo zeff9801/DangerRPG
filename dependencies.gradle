@@ -82,10 +82,10 @@ tasks.register('countJavaLines') {
         logFile.withWriter { writer ->
             writer.writeLine("Total number of lines: ${totalLines}")
             fileLineCounts.each { line ->
-                writer.writeLine("${line} lignes")
+                writer.writeLine("${line} lines")
             }
         }
         println "Total number of lines: ${totalLines}"
-        fileLineCounts.each { println "${it} lignes" }
+        fileLineCounts.each { println "${it} lines" }
     }
 }
