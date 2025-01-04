@@ -5,12 +5,12 @@ import fr.iamacat.api.utils.CatUtils;
 import cpw.mods.fml.common.Loader;
 
 import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-// TODO SIMPLIFY CONFIG CREATION
-// TODO OPTIMIZE THE CODE
 // TODO ADD NON CATEGORY CONFIG SUPPORT
 // TODO ADD GUI INGAME CONFIG
 public class CatConfig {
@@ -74,6 +74,8 @@ public class CatConfig {
                 CatLogger.logger.severe("Error when saving the configuration: " + e.getMessage());
             }
             pM.properties.putAll(existingProperties);
+            pM.loadValues();
+            updateStaticFields(category);
         }
     }
 
@@ -110,4 +112,23 @@ public class CatConfig {
         }
     }
 
+    protected void registerProperties() {
+        CatLogger.logger.severe("Please implement this method otherwise your config file will be empty");
+    }
+
+    protected void updateStaticFields(String category) {
+        try {
+            for (Field field : getClass().getDeclaredFields()) {
+                if (Modifier.isStatic(field.getModifiers()) && !Modifier.isFinal(field.getModifiers())) {
+                    String propertyName = field.getName();
+                    Object value = pM.getRegisteredValue(category, propertyName);
+                    if (value != null) {
+                        field.set(null, value);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            CatLogger.logger.severe("Failed to update static fields: " + e.getMessage());
+        }
+    }
 }
