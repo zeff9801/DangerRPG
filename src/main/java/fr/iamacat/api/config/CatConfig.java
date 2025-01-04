@@ -4,17 +4,15 @@ import fr.iamacat.api.CatLogger;
 import fr.iamacat.api.utils.CatUtils;
 import cpw.mods.fml.common.Loader;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-// TODO ADD SAVE CONFIG PER KEY
 // TODO SIMPLIFY CONFIG CREATION
 // TODO OPTIMIZE THE CODE
 // TODO ADD NON CATEGORY CONFIG SUPPORT
+// TODO ADD GUI INGAME CONFIG
 public class CatConfig {
 
     protected PropertyManager pM = new PropertyManager();
@@ -78,4 +76,38 @@ public class CatConfig {
             pM.properties.putAll(existingProperties);
         }
     }
+
+    public void saveConfigForKey(String category, String key, String value) {
+        File configFile = new File(configFolder, category + ".cfg");
+        CatUtils.createFileIfNotExists(configFile);
+        String fullKey = category + "." + key;
+        pM.properties.setProperty(fullKey, value);
+        List<String> lines = new ArrayList<>();
+        boolean lineFound = false;
+        try (BufferedReader reader = new BufferedReader(new FileReader(configFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith(fullKey + "=")) {
+                    lines.add(fullKey + "=" + value);
+                    lineFound = true;
+                } else {
+                    lines.add(line);
+                }
+            }
+        } catch (IOException e) {
+            CatLogger.logger.severe("Error reading configuration file: " + e.getMessage());
+            return;
+        }
+        if (!lineFound) {
+            lines.add(fullKey + "=" + value);
+        }
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(configFile, false))) {
+            for (String line : lines) {
+                writer.write(line + "\n");
+            }
+        } catch (IOException e) {
+            CatLogger.logger.severe("Error writing configuration file: " + e.getMessage());
+        }
+    }
+
 }
