@@ -7,7 +7,11 @@ import java.util.List;
 
 import java.io.*;
 import java.util.*;
-
+// TODO ADD CONFIG VERSIONNING
+// TODO ADD SAVE CONFIG PER KEY
+// TODO SIMPLIFY CONFIG CREATION
+// TODO OPTIMIZE THE CODE
+// TODO ADD NON CATEGORY CONFIG SUPPORT
 public class CatConfig {
 
     private final Properties properties = new Properties();
@@ -150,7 +154,7 @@ public class CatConfig {
     }
 
     public void setProperty(String category, String key, boolean value, String comment) {
-        properties.setProperty(category + "." + key, Boolean.toString(value) + " # " + comment);
+        properties.setProperty(category + "." + key, value + " # " + comment);
     }
 
     public void setProperty(String category, String key, int value, int minValue, int maxValue, String comment) {
