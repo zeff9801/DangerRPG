@@ -39,18 +39,11 @@ public class DangerRPG {
     public static final Logger logger = LogManager.getLogger(DangerRPG.MODID);
 
     @EventHandler
-    public void onConstruct(FMLConstructionEvent event) {
-        config = new DangerConfig("dangerrpgtest");
-        config.saveConfig();
-        config.loadConfig();
-    }
-    @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         if (Loader.isModLoaded("torohealthmod")) {
             throw new RuntimeException(
                 "Custom Damage Particle mod is installed! Crashing the game Because DangerRPG add a thing like Custom Damage Particles mod, so pls remove DangerRPG or Custom Damage Particle");
         }
-
         proxy.preInit(event);
     }
 

@@ -8,7 +8,9 @@ public class DangerMixinPlugin extends CatMixinPlugin {
 
     @Override
     public void onLoad(String mixinPackage) {
-        if (TargetedMod.OPTIFINE.isModLoaded() && DangerConfig.enableMixinRenderLiving) {
+        DangerRPG.config = new DangerConfig("dangerrpgtest");
+        DangerRPG.config.loadConfig();
+        if (DangerConfig.enableMixinRenderLiving && TargetedMod.OPTIFINE.isModLoaded()) {
             addMixin("client.vanilla.compatoptifineshaders.MixinRenderLiving", CLIENT);
         }
         if (DangerConfig.enableVanillaArrowReplacement) {
