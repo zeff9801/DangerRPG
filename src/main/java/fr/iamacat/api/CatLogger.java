@@ -1,7 +1,8 @@
 package fr.iamacat.api;
 
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class CatLogger {
-    public static final Logger logger = Logger.getLogger(CatLogger.class.getName());
+    public static final Logger logger = LogManager.getLogger();
 }

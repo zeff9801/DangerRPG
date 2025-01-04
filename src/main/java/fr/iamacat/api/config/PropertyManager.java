@@ -39,7 +39,7 @@ public class PropertyManager {
     public void setProperty(String category, String key, int value, int minValue, int maxValue, String comment) {
         int clampedValue = Math.min(Math.max(value, minValue), maxValue);
         if (clampedValue != value) {
-            CatLogger.logger.warning("The value of " + key + " in category " + category + " was modified from " + value + " to " + clampedValue + " because it was outside the range [" + minValue + ", " + maxValue + "].");
+            CatLogger.logger.warn("The value of " + key + " in category " + category + " was modified from " + value + " to " + clampedValue + " because it was outside the range [" + minValue + ", " + maxValue + "].");
         }
         properties.setProperty(category + "." + key, clampedValue + " # " + comment + " (min: " + minValue + ", max: " + maxValue + ")");
     }
@@ -47,7 +47,7 @@ public class PropertyManager {
     public void setProperty(String category, String key, float value, float minValue, float maxValue, String comment) {
         float clampedValue = Math.min(Math.max(value, minValue), maxValue);
         if (clampedValue != value) {
-            CatLogger.logger.warning("The value of " + key + " in category " + category + " was modified from " + value + " to " + clampedValue + " because it was outside the range [" + minValue + ", " + maxValue + "].");
+            CatLogger.logger.warn("The value of " + key + " in category " + category + " was modified from " + value + " to " + clampedValue + " because it was outside the range [" + minValue + ", " + maxValue + "].");
         }
         properties.setProperty(category + "." + key, clampedValue + " # " + comment + " (min: " + minValue + ", max: " + maxValue + ")");
     }
@@ -55,7 +55,7 @@ public class PropertyManager {
     public void setProperty(String category, String key, double value, double minValue, double maxValue, String comment) {
         double clampedValue = Math.min(Math.max(value, minValue), maxValue);
         if (clampedValue != value) {
-            CatLogger.logger.warning("The value of " + key + " in category " + category + " was modified from " + value + " to " + clampedValue + " because it was outside the range [" + minValue + ", " + maxValue + "].");
+            CatLogger.logger.warn("The value of " + key + " in category " + category + " was modified from " + value + " to " + clampedValue + " because it was outside the range [" + minValue + ", " + maxValue + "].");
         }
         properties.setProperty(category + "." + key, clampedValue + " # " + comment + " (min: " + minValue + ", max: " + maxValue + ")");
     }

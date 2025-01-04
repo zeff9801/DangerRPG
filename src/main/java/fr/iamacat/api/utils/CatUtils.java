@@ -9,9 +9,9 @@ public class CatUtils {
     public static void createDirectoryIfNotExists(File directory) {
         if (!directory.exists()) {
             if (directory.mkdirs()) {
-                CatLogger.logger.info("Created new directory: " + directory.getAbsolutePath());
+                CatLogger.logger.info("Created new directory: {}", directory.getAbsolutePath());
             } else {
-                CatLogger.logger.severe("Failed to create directory: " + directory.getAbsolutePath());
+                CatLogger.logger.error("Failed to create directory: {}", directory.getAbsolutePath());
             }
         }
     }
@@ -23,7 +23,7 @@ public class CatUtils {
                     CatLogger.logger.info("Created new file: " + file.getAbsolutePath());
                 }
             } catch (IOException e) {
-                CatLogger.logger.severe("Error creating file: " + e.getMessage());
+                CatLogger.logger.error("Error creating file: {}", e.getMessage());
             }
         }
     }
@@ -33,7 +33,7 @@ public class CatUtils {
         try (FileInputStream fis = new FileInputStream(file)) {
             properties.load(fis);
         } catch (IOException e) {
-            CatLogger.logger.warning("Could not read properties from file: " + e.getMessage());
+            CatLogger.logger.warn("Could not read properties from file: {}", e.getMessage());
         }
         return properties;
     }
@@ -46,11 +46,11 @@ public class CatUtils {
                 try {
                     writer.write(key + "=" + value + "\n");
                 } catch (IOException e) {
-                    CatLogger.logger.severe("Error when writing properties to file: " + e.getMessage());
+                    CatLogger.logger.error("Error when writing properties to file: " + e.getMessage());
                 }
             });
         } catch (IOException e) {
-            CatLogger.logger.severe("Error when writing properties to file: " + e.getMessage());
+            CatLogger.logger.error("Error when writing properties to file: " + e.getMessage());
         }
     }
 

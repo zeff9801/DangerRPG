@@ -28,6 +28,7 @@ public class CatConfig {
         this.categories = categories;
         this.configFolder = new File(new File(Loader.instance().getConfigDir(), "config"), folderName);
         CatUtils.createDirectoryIfNotExists(configFolder);
+        registerProperties();
     }
 
     public void loadConfig() {
@@ -66,12 +67,12 @@ public class CatConfig {
                             String finalValue = existingValue == null || existingValue.trim().isEmpty() ? val : existingValue;
                             writer.write(category + "." + keyWithoutCategory + "=" + finalValue + "\n");
                         } catch (IOException e) {
-                            CatLogger.logger.severe("Error when writing the configuration: " + e.getMessage());
+                            CatLogger.logger.error("Error when writing the configuration: {}", e.getMessage());
                         }
                     }
                 });
             } catch (IOException e) {
-                CatLogger.logger.severe("Error when saving the configuration: " + e.getMessage());
+                CatLogger.logger.error("Error when saving the configuration: {}", e.getMessage());
             }
             pM.properties.putAll(existingProperties);
             pM.loadValues();
@@ -97,7 +98,7 @@ public class CatConfig {
                 }
             }
         } catch (IOException e) {
-            CatLogger.logger.severe("Error reading configuration file: " + e.getMessage());
+            CatLogger.logger.error("Error reading configuration file: {}", e.getMessage());
             return;
         }
         if (!lineFound) {
@@ -108,12 +109,12 @@ public class CatConfig {
                 writer.write(line + "\n");
             }
         } catch (IOException e) {
-            CatLogger.logger.severe("Error writing configuration file: " + e.getMessage());
+            CatLogger.logger.error("Error writing configuration file: {}", e.getMessage());
         }
     }
 
     protected void registerProperties() {
-        CatLogger.logger.severe("Please implement this method otherwise your config file will be empty");
+        CatLogger.logger.error("Please implement registerProperties method from CatConfig otherwise your config file will be empty");
     }
 
     protected void updateStaticFields(String category) {
@@ -128,7 +129,7 @@ public class CatConfig {
                 }
             }
         } catch (Exception e) {
-            CatLogger.logger.severe("Failed to update static fields: " + e.getMessage());
+            CatLogger.logger.error("Failed to update static fields: {}", e.getMessage());
         }
     }
 }

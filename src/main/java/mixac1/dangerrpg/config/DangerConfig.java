@@ -16,7 +16,6 @@ public class DangerConfig extends CatConfig {
     public DangerConfig(String folderName) {
         super(folderName, Arrays.asList(MAIN_CATEGORY));
         CONFIG_VERSION = "2.1";
-        registerProperties();
     }
 
     @Override
