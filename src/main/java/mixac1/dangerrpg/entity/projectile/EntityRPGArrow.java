@@ -15,7 +15,7 @@ import mixac1.dangerrpg.entity.projectile.core.EntityMaterial;
 
 public class EntityRPGArrow extends EntityMaterial {
 
-    protected static final int DW_INDEX_BOWSTACK = 26;
+    private ItemStack bowStack;
 
     public EntityRPGArrow(World world) {
         super(world);
@@ -23,43 +23,36 @@ public class EntityRPGArrow extends EntityMaterial {
 
     public EntityRPGArrow(World world, ItemStack stack) {
         super(world, new ItemStack(Items.arrow, 1));
-        setStack(stack, DW_INDEX_BOWSTACK);
+        this.bowStack = stack;
     }
 
     public EntityRPGArrow(World world, ItemStack stack, double x, double y, double z) {
         super(world, new ItemStack(Items.arrow, 1), x, y, z);
-        setStack(stack, DW_INDEX_BOWSTACK);
+        this.bowStack = stack;
     }
 
     public EntityRPGArrow(World world, ItemStack stack, EntityLivingBase thrower, float speed, float deviation) {
         super(world, thrower, new ItemStack(Items.arrow, 1), speed, deviation);
-        setStack(stack, DW_INDEX_BOWSTACK);
+        this.bowStack = stack;
     }
 
     public EntityRPGArrow(World world, ItemStack stack, EntityLivingBase thrower, EntityLivingBase target, float speed,
-        float deviation) {
+                          float deviation) {
         super(world, thrower, target, new ItemStack(Items.arrow, 1), speed, deviation);
-        setStack(stack, DW_INDEX_BOWSTACK);
-    }
-
-    @Override
-    public void entityInit() {
-        super.entityInit();
-        dataWatcher.addObject(DW_INDEX_BOWSTACK, new ItemStack(Items.arrow, 0));
+        this.bowStack = stack;
     }
 
     @Override
     public void applyEntityHitEffects(EntityLivingBase entity, float dmgMul) {
         float points = entity.getHealth();
 
-        ItemStack stack = this.getStack(DW_INDEX_BOWSTACK);
-        if (stack != null && stack.getItem() != Items.arrow) {
-            if (ItemAttributes.SHOT_DAMAGE.hasIt(stack)) {
-                phisicDamage = ItemAttributes.SHOT_DAMAGE.get(stack);
-            } else if (ItemAttributes.MELEE_DAMAGE.hasIt(stack)) {
-                phisicDamage = ItemAttributes.MELEE_DAMAGE.get(stack);
+        if (bowStack != null && bowStack.getItem() != Items.arrow) {
+            if (ItemAttributes.SHOT_DAMAGE.hasIt(bowStack)) {
+                phisicDamage = ItemAttributes.SHOT_DAMAGE.get(bowStack);
+            } else if (ItemAttributes.MELEE_DAMAGE.hasIt(bowStack)) {
+                phisicDamage = ItemAttributes.MELEE_DAMAGE.get(bowStack);
             }
-            HitEntityEvent event = new HitEntityEvent(stack, entity, thrower, phisicDamage, 0, true);
+            HitEntityEvent event = new HitEntityEvent(bowStack, entity, thrower, phisicDamage, 0, true);
             MinecraftForge.EVENT_BUS.post(event);
             phisicDamage = event.newDamage;
         }
@@ -68,7 +61,7 @@ public class EntityRPGArrow extends EntityMaterial {
 
         points -= entity.getHealth();
         if (thrower instanceof EntityPlayer) {
-            MinecraftForge.EVENT_BUS.post(new DealtDamageEvent((EntityPlayer) thrower, entity, stack, points));
+            MinecraftForge.EVENT_BUS.post(new DealtDamageEvent((EntityPlayer) thrower, entity, bowStack, points));
         }
     }
 

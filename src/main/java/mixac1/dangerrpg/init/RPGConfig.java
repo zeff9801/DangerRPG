@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
 
+import lombok.Getter;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityZombie;
@@ -45,13 +46,6 @@ public class RPGConfig {
 
     static {
         dir = new File((File) FMLInjectionData.data()[6], "config/".concat(DangerRPG.MODID));
-        if (dir.exists()) {
-            if (!dir.isDirectory()) {
-                dir.delete();
-            }
-        } else {
-            dir.mkdir();
-        }
     }
 
     @SideOnly(Side.CLIENT)
@@ -297,30 +291,30 @@ public class RPGConfig {
                 d.neiShowShapedRecipe,
                 "Is show default recipes in RPG workbench (need NEI) (true/false)");
 
-            d.showDamageParticles = config
+            Data.showDamageParticles = config
                 .getBoolean("Show Damage Particles", Configuration.CATEGORY_GENERAL, true, "Show Damage Indicators");
-            d.showAlways = config.getBoolean(
+            Data.showAlways = config.getBoolean(
                 "Show Always Particles",
                 Configuration.CATEGORY_GENERAL,
                 false,
                 "Show Always The Damage Particles");
-            d.size2 = config
-                .get(Configuration.CATEGORY_GENERAL, "Particles Size", d.size2, "Particles Size [default: 3.0]")
+            Data.size2 = config
+                .get(Configuration.CATEGORY_GENERAL, "Particles Size", Data.size2, "Particles Size [default: 3.0]")
                 .getDouble();
-            d.healColor = mapColor(
+            Data.healColor = mapColor(
                 config.getString(
                     "Heal Color",
                     Configuration.CATEGORY_GENERAL,
                     "GREEN",
                     "Heal Text Color",
-                    d.acceptedColors));
-            d.damageColor = mapColor(
+                    Data.acceptedColors));
+            Data.damageColor = mapColor(
                 config.getString(
                     "Damage Color",
                     Configuration.CATEGORY_GENERAL,
                     "RED",
                     "Damage Text Color",
-                    d.acceptedColors));
+                    Data.acceptedColors));
 
             save();
         }
@@ -373,7 +367,7 @@ public class RPGConfig {
 
         public static Data d = new Data();
 
-        public static HashSet<String> activeRPGItems = new HashSet<String>();
+        public static HashSet<String> activeRPGItems = new HashSet<>();
 
         public ItemConfig(String fileName) {
             super(fileName);
@@ -451,11 +445,11 @@ public class RPGConfig {
             ArrayList<String> names = RPGHelper.getItemNames(RPGCapability.rpgItemRegistr.keySet(), true, false);
             Property prop = getPropertyStrings(
                 "activeRPGItems",
-                names.toArray(new String[names.size()]),
+                names.toArray(new String[0]),
                 "Set active RPG items (activated if 'isAllItemsRPGable' is false) (true/false)",
                 false);
             if (!d.isAllItemsRPGable) {
-                activeRPGItems = new HashSet<String>(Arrays.asList(prop.getStringList()));
+                activeRPGItems = new HashSet<>(Arrays.asList(prop.getStringList()));
             }
 
             save();
@@ -471,14 +465,14 @@ public class RPGConfig {
             ArrayList<String> names = RPGHelper.getItemNames(map.keySet(), true, false);
             getPropertyStrings(
                 "activeRPGItems",
-                names.toArray(new String[names.size()]),
+                names.toArray(new String[0]),
                 "Set active RPG items (activated if 'isAllItemsRPGable' is false) (true/false)",
                 true);
 
             names = RPGHelper.getItemNames(RPGCapability.rpgItemRegistr.keySet(), true, true);
             getPropertyStrings(
                 "itemList",
-                names.toArray(new String[names.size()]),
+                names.toArray(new String[0]),
                 "List of all items, which can be RPGable",
                 true);
 
@@ -493,7 +487,7 @@ public class RPGConfig {
                 new String[] { Items.diamond_sword.delegate.name() },
                 "Set items, which needs customization",
                 true);
-            HashSet<String> needCustomSetting = new HashSet<String>(Arrays.asList(prop.getStringList()));
+            HashSet<String> needCustomSetting = new HashSet<>(Arrays.asList(prop.getStringList()));
 
             if (!needCustomSetting.isEmpty()) {
                 for (Entry<Item, RPGItemData> item : map.entrySet()) {
@@ -590,7 +584,7 @@ public class RPGConfig {
 
         public static Data d = new Data();
 
-        public static HashSet<String> activeRPGEntities = new HashSet<String>();
+        public static HashSet<String> activeRPGEntities = new HashSet<>();
 
         public EntityConfig(String fileName) {
             super(fileName);
@@ -689,11 +683,11 @@ public class RPGConfig {
             ArrayList<String> names = RPGHelper.getEntityNames(RPGCapability.rpgEntityRegistr.keySet(), true);
             Property prop = getPropertyStrings(
                 "activeRPGEntities",
-                names.toArray(new String[names.size()]),
+                names.toArray(new String[0]),
                 "Set active RPG entities (activated if 'isAllEntitiesRPGable' is false) (true/false)",
                 false);
             if (!d.isAllEntitiesRPGable) {
-                activeRPGEntities = new HashSet<String>(Arrays.asList(prop.getStringList()));
+                activeRPGEntities = new HashSet<>(Arrays.asList(prop.getStringList()));
             }
             save();
         }
@@ -753,7 +747,7 @@ public class RPGConfig {
                 new String[] { (String) EntityList.classToStringMapping.get(EntityZombie.class) },
                 "Set entities, which needs customization",
                 true);
-            HashSet<String> needCustomSetting = new HashSet<String>(Arrays.asList(prop.getStringList()));
+            HashSet<String> needCustomSetting = new HashSet<>(Arrays.asList(prop.getStringList()));
 
             if (!needCustomSetting.isEmpty()) {
                 String entityName;
@@ -812,6 +806,7 @@ public class RPGConfig {
         protected Configuration config;
         protected ConfigCategory category;
 
+        @Getter
         protected byte[] transferData;
 
         protected RPGConfigCommon(String fileName) {
@@ -839,10 +834,6 @@ public class RPGConfig {
         public abstract void createTransferData();
 
         public abstract void extractTransferData(byte[] transferData);
-
-        public byte[] getTransferData() {
-            return transferData;
-        }
 
         protected Property getPropertyStrings(String categoryName, String[] defValue, String comment,
             boolean needClear) {

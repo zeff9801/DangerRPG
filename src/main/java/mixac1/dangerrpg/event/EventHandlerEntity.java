@@ -36,6 +36,7 @@ import mixac1.dangerrpg.util.Utils;
 public class EventHandlerEntity {
 
     // fix https://github.com/quentin452/DangerRPG-Continuation/issues/36
+    //TODO GET RID OF THIS
     @SubscribeEvent
     public void onDimensionChange(cpw.mods.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent event) {
         if (event.player != null) {

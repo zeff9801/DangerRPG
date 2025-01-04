@@ -3,6 +3,7 @@ package mixac1.dangerrpg.capability;
 import java.util.ArrayList;
 import java.util.Set;
 
+import mixac1.dangerrpg.util.ArmorSystem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,7 +18,6 @@ import mixac1.dangerrpg.api.item.IRPGItem.*;
 import mixac1.dangerrpg.api.item.ItemAttribute;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.ItemType;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
-import mixac1.dangerrpg.hook.core.HookArmorSystem;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGConfig.ItemConfig;
 import mixac1.dangerrpg.item.RPGArmorMaterial;
@@ -146,7 +146,7 @@ public abstract class RPGItemHelper {
         RPGArmorComponent com = iRPG.getItemComponent(item);
 
         float armor = mat.material.getDamageReductionAmount(((ItemArmor) item).armorType) * com.phisicalResMul;
-        map.registerIAStatic(ItemAttributes.PHYSIC_ARMOR, HookArmorSystem.convertPhisicArmor(armor));
+        map.registerIAStatic(ItemAttributes.PHYSIC_ARMOR, ArmorSystem.convertPhisicArmor(armor));
         map.registerIAStatic(ItemAttributes.MAGIC_ARMOR, mat.magicRes * com.magicResMul);
 
         map.registerGT(GemTypes.PA, 2);

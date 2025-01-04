@@ -45,7 +45,7 @@ import mixac1.dangerrpg.init.RPGConfig.ItemConfig;
 import mixac1.dangerrpg.item.gem.Gem;
 import rozmir.entity_extensions.IronGolemExtension;
 import rozmir.entity_extensions.SnowGolemExtension;
-
+// TODO NEED TO IMPLEMENTE MIXINS TO AUTOMATICALLY ADD RPG CAPABILITIES TO ALL ENTITIES
 public abstract class RPGCapability {
 
     public static final RPGItemRegister rpgItemRegistr = new RPGItemRegister();
@@ -198,7 +198,7 @@ public abstract class RPGCapability {
         }
         // Check if the etfuturum mod is loaded
         if (Loader.isModLoaded("etfuturum")) {
-            RPGRegister.registerRPGEntity(EntityStray.class, new RPGRangeEntityMob(2f));
+            RPGRegister.registerRPGEntity(EntityStray.class, new RPGCommonRangeEntity(2f));
             RPGRegister.registerRPGEntity(EntityShulker.class, new RPGCommonRangeEntity(2f));
         }
     }

@@ -2,6 +2,7 @@ package mixac1.dangerrpg.client.gui;
 
 import java.util.Objects;
 
+import mixac1.dangerrpg.util.ArmorSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -28,7 +29,6 @@ import mixac1.dangerrpg.capability.PlayerAttributes;
 import mixac1.dangerrpg.capability.RPGEntityHelper;
 import mixac1.dangerrpg.capability.data.RPGEntityProperties;
 import mixac1.dangerrpg.client.gui.GuiMode.GuiModeType;
-import mixac1.dangerrpg.hook.core.HookArmorSystem;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGConfig.ClientConfig;
 import mixac1.dangerrpg.util.RPGHelper;
@@ -336,7 +336,7 @@ public class RPGGuiIngame extends Gui {
                     barH,
                     isInverted);
 
-                curr = HookArmorSystem.getTotalPhisicArmor();
+                curr = ArmorSystem.getTotalPhisicArmor();
                 proc = getProcent(curr, 100F, barW);
                 if (proc > 0) {
                     drawTexturedModalRect(
@@ -358,7 +358,7 @@ public class RPGGuiIngame extends Gui {
                         isInverted);
                 }
 
-                curr = HookArmorSystem.getTotalMagicArmor();
+                curr = ArmorSystem.getTotalMagicArmor();
                 proc = getProcent(curr, 100F, barW);
                 if (proc > 0) {
                     drawTexturedModalRect(
