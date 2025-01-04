@@ -47,11 +47,8 @@ dependencies {
     implementation "curse.maven:codechickenlib-unofficial-746280:4388255-deobf-sources-api"
     implementation "curse.maven:et-futurum-requiem-441392:4769523-deobf-sources-api"
     implementation "curse.maven:golem-tweaks-746411:4722766-deobf-sources-api"
-    implementation "curse.maven:fplib-665627:4824788-deobf-sources-api"
     implementation "curse.maven:witchery-69673:2234410-deobf-sources-api"
 }
-
-// this fix is required for the good function of the mod DangerRPG
 
 jar {
     manifest {

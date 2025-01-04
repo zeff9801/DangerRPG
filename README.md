@@ -24,8 +24,6 @@ Go here : [Wiki](https://github.com/quentin452/DangerRPG-Continuation/wiki)
 
 [Unimixins](https://legacy.curseforge.com/minecraft/mc-mods/unimixins/files/4600285)
 
-[FalsePatternLib](https://legacy.curseforge.com/minecraft/mc-mods/fplib/files/4701057)
-
 # Discord
 
 Add me on discord : imacatfr

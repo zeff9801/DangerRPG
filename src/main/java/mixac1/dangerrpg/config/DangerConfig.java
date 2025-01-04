@@ -1,34 +1,40 @@
 package mixac1.dangerrpg.config;
 
-import com.falsepattern.lib.config.Config;
+import fr.iamacat.api.config.CatConfig;
 
-import mixac1.dangerrpg.DangerRPG;
+import java.util.Arrays;
 
-@Config(modid = DangerRPG.MODID)
-public class DangerConfig {
+public class DangerConfig extends CatConfig {
 
-    @Config.Comment("Fix issues between Danger Rpg Gui and Optifine shaders (No Wiki)")
-    @Config.DefaultBoolean(true)
-    @Config.RequiresWorldRestart
-    public static boolean enableMixinRenderLiving;
-    @Config.Comment("Enable Vanilla Arrow/Throw/Projectile Replacement (No Wiki)")
-    @Config.DefaultBoolean(true)
-    @Config.RequiresWorldRestart
-    public static boolean enableVanillaArrowReplacement;
-    @Config.Comment("Enable Armor System Replacement (No Wiki)")
-    @Config.DefaultBoolean(true)
-    @Config.RequiresWorldRestart
-    public static boolean enableArmorSystemReplacement;
-    @Config.Comment("Enable Bow System Replacement (No Wiki)")
-    @Config.DefaultBoolean(true)
-    @Config.RequiresWorldRestart
-    public static boolean enableBowSystem;
-    @Config.Comment("Enable Item System Replacement (No Wiki)")
-    @Config.DefaultBoolean(true)
-    @Config.RequiresWorldRestart
-    public static boolean enableItemSystem;
-    @Config.Comment("Enable Entity Tweaking (No Wiki)")
-    @Config.DefaultBoolean(true)
-    @Config.RequiresWorldRestart
-    public static boolean enableEntityTweaking;
+    public static boolean enableMixinRenderLiving = true;
+    public static boolean enableVanillaArrowReplacement = true;
+    public static boolean enableArmorSystemReplacement = true;
+    public static boolean enableBowSystem = true;
+    public static boolean enableItemSystem = true;
+    public static boolean enableEntityTweaking = true;
+    private static final String MAIN_CATEGORY = "Main";
+
+    public DangerConfig(String folderName) {
+        super(folderName, Arrays.asList(MAIN_CATEGORY));
+    }
+
+    public void loadConfig() {
+        super.loadConfig();
+        enableMixinRenderLiving = getProperty(MAIN_CATEGORY, "enableMixinRenderLiving", true, "Fix issues between Danger Rpg Gui and Optifine shaders (No Wiki)");
+        enableVanillaArrowReplacement = getProperty(MAIN_CATEGORY, "enableVanillaArrowReplacement", true,"Enable Vanilla Arrow/Throw/Projectile Replacement (No Wiki)");
+        enableArmorSystemReplacement = getProperty(MAIN_CATEGORY, "enableArmorSystemReplacement", true,"Enable Armor System Replacement (No Wiki)");
+        enableBowSystem = getProperty(MAIN_CATEGORY, "enableBowSystem", true,"Enable Bow System Replacement (No Wiki)");
+        enableItemSystem = getProperty(MAIN_CATEGORY, "enableItemSystem", true,"Enable Item System Replacement (No Wiki)");
+        enableEntityTweaking = getProperty(MAIN_CATEGORY, "enableEntityTweaking", true,"Enable Entity Tweaking (No Wiki)");
+    }
+
+    public void saveConfig() {
+        setProperty(MAIN_CATEGORY, "enableMixinRenderLiving", enableMixinRenderLiving, "Fix issues between Danger Rpg Gui and Optifine shaders (No Wiki)");
+        setProperty(MAIN_CATEGORY, "enableVanillaArrowReplacement", enableVanillaArrowReplacement,"Enable Vanilla Arrow/Throw/Projectile Replacement (No Wiki)");
+        setProperty(MAIN_CATEGORY, "enableArmorSystemReplacement", enableArmorSystemReplacement,"Enable Armor System Replacement (No Wiki)");
+        setProperty(MAIN_CATEGORY, "enableBowSystem", enableBowSystem,"Enable Bow System Replacement (No Wiki)");
+        setProperty(MAIN_CATEGORY, "enableItemSystem", enableItemSystem,"Enable Item System Replacement (No Wiki)");
+        setProperty(MAIN_CATEGORY, "enableEntityTweaking", enableEntityTweaking,"Enable Entity Tweaking (No Wiki)");
+        super.saveConfig();
+    }
 }

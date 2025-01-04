@@ -1,5 +1,7 @@
 package mixac1.dangerrpg;
 
+import cpw.mods.fml.common.event.*;
+import mixac1.dangerrpg.config.DangerConfig;
 import net.minecraft.util.StatCollector;
 
 import org.apache.logging.log4j.LogManager;
@@ -10,9 +12,6 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import mixac1.dangerrpg.init.RPGConfig.MainConfig;
 import mixac1.dangerrpg.proxy.CommonProxy;
 import mixac1.dangerrpg.util.Utils;
@@ -22,9 +21,10 @@ import mixac1.dangerrpg.util.Utils;
     name = DangerRPG.MODNAME,
     version = DangerRPG.VERSION,
     acceptedMinecraftVersions = DangerRPG.ACCEPTED_VERSION,
-    dependencies = "required-after:Forge")
+    //dependencies = "required-after:Forge" + "required-after:iamacat_core")
+    dependencies = "required-after:Forge" )
 public class DangerRPG {
-
+    public static DangerConfig config;
     public static final String MODNAME = "DangerRPG";
     public static final String MODID = "dangerrpg";
     public static final String VERSION = "1.1.4";
@@ -38,6 +38,12 @@ public class DangerRPG {
 
     public static final Logger logger = LogManager.getLogger(DangerRPG.MODID);
 
+    @EventHandler
+    public void onConstruct(FMLConstructionEvent event) {
+        config = new DangerConfig("dangerrpgtest");
+        config.saveConfig();
+        config.loadConfig();
+    }
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         if (Loader.isModLoaded("torohealthmod")) {

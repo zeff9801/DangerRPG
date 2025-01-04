@@ -1,36 +1,35 @@
 package mixac1.dangerrpg.asm;
 
-import org.apache.logging.log4j.Logger;
-
-import com.falsepattern.lib.config.ConfigException;
-import com.falsepattern.lib.config.ConfigurationManager;
-import com.falsepattern.lib.mixin.IMixin;
-import com.falsepattern.lib.mixin.IMixinPlugin;
-import com.falsepattern.lib.mixin.ITargetedMod;
-
-import lombok.Getter;
+import fr.iamacat.api.asm.CatMixinPlugin;
 import mixac1.dangerrpg.config.DangerConfig;
 
-public class DangerMixinPlugin implements IMixinPlugin {
+public class DangerMixinPlugin extends CatMixinPlugin {
 
-    @Getter
-    private final Logger logger = IMixinPlugin.createLogger("DangerRPG");
-
-    public DangerMixinPlugin() {
-        try {
-            ConfigurationManager.initialize(DangerConfig.class);
-        } catch (ConfigException e) {
-            throw new RuntimeException(e);
+    @Override
+    public void onLoad(String mixinPackage) {
+        if (TargetedMod.OPTIFINE.isModLoaded()) {
+            addMixin("client.vanilla.compatoptifineshaders.MixinRenderLiving", CLIENT);
         }
-    }
-
-    @Override
-    public ITargetedMod[] getTargetedModEnumValues() {
-        return TargetedMod.values();
-    }
-
-    @Override
-    public IMixin[] getMixinEnumValues() {
-        return Mixin.values();
+        if (DangerConfig.enableVanillaArrowReplacement) {
+            addMixin("common.vanilla.ArrowReplacement.MixinEntityArrow");
+        }
+        if (DangerConfig.enableArmorSystemReplacement) {
+            addMixin("common.vanilla.ArmorSystem.MixinArmorProperties");
+        }
+        if (DangerConfig.enableEntityTweaking) {
+            addMixin("common.vanilla.EntityTweaks.MixinEntity");
+            addMixin("common.vanilla.EntityTweaks.MixinEntityLivingBase");
+            addMixin("common.vanilla.EntityTweaks.MixinEntityPlayer");
+            addMixin("common.vanilla.EntityTweaks.MixinSharedMonsterAttributes");
+        }
+        if (DangerConfig.enableBowSystem) {
+            addMixin("common.vanilla.BowSystem.MixinEntityPlayer");
+            addMixin("common.vanilla.BowSystem.MixinEntityPlayerSP");
+            addMixin("common.vanilla.BowSystem.MixinItemBow");
+        }
+        if (DangerConfig.enableItemSystem) {
+            addMixin("common.vanilla.ItemSystem.MixinItem");
+            addMixin("common.vanilla.ItemSystem.MixinItemStack");
+        }
     }
 }
