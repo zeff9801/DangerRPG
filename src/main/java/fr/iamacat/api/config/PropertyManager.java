@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+//TODO DEDUPPLICATE CODE
 public class PropertyManager {
     public final Properties properties = new Properties();
     private final Map<String, ConfigValue<?>> registeredProperties = new HashMap<>();
