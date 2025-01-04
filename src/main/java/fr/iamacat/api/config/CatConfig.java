@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-// TODO ADD CONFIG VERSIONING
 // TODO ADD SAVE CONFIG PER KEY
 // TODO SIMPLIFY CONFIG CREATION
 // TODO OPTIMIZE THE CODE
@@ -21,6 +20,8 @@ public class CatConfig {
     protected PropertyManager pM = new PropertyManager();
     private final File configFolder;
     private final List<String> categories;
+    protected static String CONFIG_VERSION = "1.0";
+    private static final String VERSION_KEY = "config.version";
 
     public CatConfig(String folderName, List<String> categories) {
         if (categories == null || categories.isEmpty()) {
@@ -36,10 +37,17 @@ public class CatConfig {
             File configFile = new File(configFolder, category + ".cfg");
             Properties existingProperties = CatUtils.loadProperties(configFile);
             CatUtils.createFileIfNotExists(configFile);
+            String existingVersion = existingProperties.getProperty(VERSION_KEY);
+            boolean versionChanged = !CONFIG_VERSION.equals(existingVersion);
+            if (versionChanged) {
+                existingProperties.clear();
+                existingProperties.setProperty(VERSION_KEY, CONFIG_VERSION);
+            }
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(configFile))) {
                 writer.write("# " + category + " Configuration\n");
                 writer.write("# " + new Date() + "\n");
                 writer.write("# THIS CONFIG FILE IS IN ALPHA VERSION\n");
+                writer.write(VERSION_KEY + "=" + CONFIG_VERSION + "\n");
                 pM.properties.forEach((key, value) -> {
                     String keyString = key.toString();
                     if (keyString.startsWith(category + ".")) {
