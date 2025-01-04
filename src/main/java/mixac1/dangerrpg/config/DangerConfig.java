@@ -20,18 +20,18 @@ public class DangerConfig extends CatConfig {
 
 
     public void loadConfig() {
-        setProperty(MAIN_CATEGORY, "enableMixinRenderLiving", enableMixinRenderLiving, "Fix issues between Danger Rpg Gui and Optifine shaders (No Wiki)");
-        setProperty(MAIN_CATEGORY, "enableVanillaArrowReplacement", enableVanillaArrowReplacement,"Enable Vanilla Arrow/Throw/Projectile Replacement (No Wiki)");
-        setProperty(MAIN_CATEGORY, "enableArmorSystemReplacement", enableArmorSystemReplacement,"Enable Armor System Replacement (No Wiki)");
-        setProperty(MAIN_CATEGORY, "enableBowSystem", enableBowSystem,"Enable Bow System Replacement (No Wiki)");
-        setProperty(MAIN_CATEGORY, "enableItemSystem", enableItemSystem,"Enable Item System Replacement (No Wiki)");
-        setProperty(MAIN_CATEGORY, "enableEntityTweaking", enableEntityTweaking,"Enable Entity Tweaking (No Wiki)");
+        pM.setProperty(MAIN_CATEGORY, "enableMixinRenderLiving", enableMixinRenderLiving, "Fix issues between Danger Rpg Gui and Optifine shaders (No Wiki)");
+        pM.setProperty(MAIN_CATEGORY, "enableVanillaArrowReplacement", enableVanillaArrowReplacement,"Enable Vanilla Arrow/Throw/Projectile Replacement (No Wiki)");
+        pM.setProperty(MAIN_CATEGORY, "enableArmorSystemReplacement", enableArmorSystemReplacement,"Enable Armor System Replacement (No Wiki)");
+        pM.setProperty(MAIN_CATEGORY, "enableBowSystem", enableBowSystem,"Enable Bow System Replacement (No Wiki)");
+        pM.setProperty(MAIN_CATEGORY, "enableItemSystem", enableItemSystem,"Enable Item System Replacement (No Wiki)");
+        pM.setProperty(MAIN_CATEGORY, "enableEntityTweaking", enableEntityTweaking,"Enable Entity Tweaking (No Wiki)");
         super.loadConfig();
-        enableMixinRenderLiving = getProperty(MAIN_CATEGORY, "enableMixinRenderLiving",true);
-        enableVanillaArrowReplacement = getProperty(MAIN_CATEGORY, "enableVanillaArrowReplacement",true);
-        enableArmorSystemReplacement = getProperty(MAIN_CATEGORY, "enableArmorSystemReplacement",true);
-        enableBowSystem = getProperty(MAIN_CATEGORY, "enableBowSystem", true);
-        enableItemSystem = getProperty(MAIN_CATEGORY, "enableItemSystem", true);
-        enableEntityTweaking = getProperty(MAIN_CATEGORY, "enableEntityTweaking", true);
+        enableMixinRenderLiving = pM.getProperty(MAIN_CATEGORY, "enableMixinRenderLiving",true);
+        enableVanillaArrowReplacement = pM.getProperty(MAIN_CATEGORY, "enableVanillaArrowReplacement",true);
+        enableArmorSystemReplacement = pM.getProperty(MAIN_CATEGORY, "enableArmorSystemReplacement",true);
+        enableBowSystem = pM.getProperty(MAIN_CATEGORY, "enableBowSystem", true);
+        enableItemSystem = pM.getProperty(MAIN_CATEGORY, "enableItemSystem", true);
+        enableEntityTweaking = pM.getProperty(MAIN_CATEGORY, "enableEntityTweaking", true);
     }
 }
