@@ -46,6 +46,14 @@ public class RPGConfig {
 
     static {
         dir = new File((File) FMLInjectionData.data()[6], "config/".concat(DangerRPG.MODID));
+        if (dir.exists()) {
+            if (!dir.isDirectory()) {
+                dir.delete();
+            }
+        } else {
+            dir.mkdir();
+        }
+
     }
 
     @SideOnly(Side.CLIENT)
