@@ -48,6 +48,8 @@ public class CatConfig {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(configFile))) {
                 writer.write("# Configuration " + categories + "\n");
                 writer.write("# " + new Date() + "\n");
+                writer.write("# THIS CONFIG FILE IS IN ALPHA VERSION , SO MANY BUGS AND NOT FINISHED");
+                writer.write("\n");
                 properties.forEach((key, value) -> {
                     if (key.toString().startsWith(category + ".")) {
                         try {

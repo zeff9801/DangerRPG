@@ -231,7 +231,6 @@ public class EventHandlerItem {
             }
         }
     }
-
     @SubscribeEvent
     public void onUpMaxLevel(UpMaxLevelEvent e) {
         if (ItemAttributes.MAX_DURABILITY.hasIt(e.stack)) {

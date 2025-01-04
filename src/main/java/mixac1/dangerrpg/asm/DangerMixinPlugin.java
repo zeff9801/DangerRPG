@@ -1,13 +1,14 @@
 package mixac1.dangerrpg.asm;
 
 import fr.iamacat.api.asm.CatMixinPlugin;
+import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.config.DangerConfig;
 
 public class DangerMixinPlugin extends CatMixinPlugin {
 
     @Override
     public void onLoad(String mixinPackage) {
-        if (TargetedMod.OPTIFINE.isModLoaded()) {
+        if (TargetedMod.OPTIFINE.isModLoaded() && DangerConfig.enableMixinRenderLiving) {
             addMixin("client.vanilla.compatoptifineshaders.MixinRenderLiving", CLIENT);
         }
         if (DangerConfig.enableVanillaArrowReplacement) {
