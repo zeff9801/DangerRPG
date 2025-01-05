@@ -34,5 +34,10 @@ public class DangerMixinPlugin extends CatMixinPlugin {
             addMixin("common.vanilla.ItemSystem.MixinItem");
             addMixin("common.vanilla.ItemSystem.MixinItemStack");
         }
+        /*if (DangerConfig.enableFixIncorrectMotions) {
+            addMixin("common.vanilla.FixIncorrectMotions.MixinEntitySpawnMessage");
+            addMixin("common.vanilla.FixIncorrectMotions.MixinEntityTrackerEntry");
+            addMixin("common.vanilla.FixIncorrectMotions.MixinS12PacketEntityVelocity");
+        }*/
     }
 }
