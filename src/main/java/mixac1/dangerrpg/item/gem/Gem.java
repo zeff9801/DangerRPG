@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import mixac1.dangerrpg.config.DangerConfig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -24,7 +25,7 @@ import mixac1.dangerrpg.util.Utils;
 
 public abstract class Gem extends Item implements IRPGItem, IHasBooksInfo {
 
-    protected static final MultiplierAdd LVL_STEP = new MultiplierAdd((float) ItemConfig.d.gemLvlUpStep);
+    protected static final MultiplierAdd LVL_STEP = new MultiplierAdd((float) DangerConfig.gemLvlUpStep);
 
     /**
      * If empty, then it can be insert in all RPG items
@@ -50,7 +51,7 @@ public abstract class Gem extends Item implements IRPGItem, IHasBooksInfo {
 
     @Override
     public void registerAttributes(Item item, RPGItemData map) {
-        map.registerIADynamic(ItemAttributes.LEVEL, ItemConfig.d.gemStartLvl, LVL_STEP);
+        map.registerIADynamic(ItemAttributes.LEVEL, DangerConfig.gemStartLvl, LVL_STEP);
     }
 
     @Override

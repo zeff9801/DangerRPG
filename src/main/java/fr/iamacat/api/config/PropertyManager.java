@@ -2,14 +2,12 @@ package fr.iamacat.api.config;
 
 import fr.iamacat.api.CatLogger;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 //TODO DEDUPPLICATE CODE
 public class PropertyManager {
     public final Properties properties = new Properties();
-    private final Map<String, ConfigValue<?>> registeredProperties = new HashMap<>();
+    public final Map<String, ConfigValue<?>> registeredProperties = new LinkedHashMap<>();
 
     @SuppressWarnings("unchecked")
     public <T> T getProperty(String category, String key, T defaultValue) {
@@ -23,6 +21,9 @@ public class PropertyManager {
             return (T) Float.valueOf(value);
         } else if (defaultValue instanceof Double) {
             return (T) Double.valueOf(value);
+        } else if (defaultValue instanceof List) {
+            List<String> list = new ArrayList<>(Arrays.asList(value.split(",")));
+            return (T) list;
         } else {
             return (T) value;
         }
@@ -60,22 +61,25 @@ public class PropertyManager {
         properties.setProperty(category + "." + key, clampedValue + " # " + comment + " (min: " + minValue + ", max: " + maxValue + ")");
     }
 
-    public void registerProperty(String category, String key, Object defaultValue, String comment) {
+    public void registerProperty(String category, String key, Object defaultValue, String comment, boolean resetValueAtGameLaunch) {
         String fullKey = category + "." + key;
         if (defaultValue instanceof Boolean) {
-            ConfigValue<Boolean> configValue = new ConfigValue<>((Boolean) defaultValue, comment);
+            ConfigValue<Boolean> configValue = new ConfigValue<>((Boolean) defaultValue, comment, resetValueAtGameLaunch);
             registeredProperties.put(fullKey, configValue);
         } else if (defaultValue instanceof Integer) {
-            ConfigValue<Integer> configValue = new ConfigValue<>((Integer) defaultValue, comment);
+            ConfigValue<Integer> configValue = new ConfigValue<>((Integer) defaultValue, comment, resetValueAtGameLaunch);
             registeredProperties.put(fullKey, configValue);
         } else if (defaultValue instanceof Float) {
-            ConfigValue<Float> configValue = new ConfigValue<>((Float) defaultValue, comment);
+            ConfigValue<Float> configValue = new ConfigValue<>((Float) defaultValue, comment, resetValueAtGameLaunch);
             registeredProperties.put(fullKey, configValue);
         } else if (defaultValue instanceof Double) {
-            ConfigValue<Double> configValue = new ConfigValue<>((Double) defaultValue, comment);
+            ConfigValue<Double> configValue = new ConfigValue<>((Double) defaultValue, comment, resetValueAtGameLaunch);
             registeredProperties.put(fullKey, configValue);
         } else if (defaultValue instanceof String) {
-            ConfigValue<String> configValue = new ConfigValue<>((String) defaultValue, comment);
+            ConfigValue<String> configValue = new ConfigValue<>((String) defaultValue, comment, resetValueAtGameLaunch);
+            registeredProperties.put(fullKey, configValue);
+        } else if (defaultValue instanceof List) {
+            ConfigValue<List<?>> configValue = new ConfigValue<>((List<?>) defaultValue, comment, resetValueAtGameLaunch);
             registeredProperties.put(fullKey, configValue);
         }
         properties.setProperty(fullKey, defaultValue + " # " + comment);
@@ -117,15 +121,17 @@ public class PropertyManager {
         });
     }
 
-    private static class ConfigValue<T> {
+    public static class ConfigValue<T> {
         final T defaultValue;
         final String comment;
         T currentValue;
+        final Boolean resetValueAtGameLaunch;
 
-        ConfigValue(T defaultValue, String comment) {
+        ConfigValue(T defaultValue, String comment,Boolean resetValueAtGameLaunch) {
             this.defaultValue = defaultValue;
             this.comment = comment;
             this.currentValue = defaultValue;
+            this.resetValueAtGameLaunch = resetValueAtGameLaunch;
         }
     }
 }
