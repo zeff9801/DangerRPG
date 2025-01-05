@@ -52,6 +52,7 @@ public class DangerRPG {
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
+        config.postLoadConfig();
     }
 
     public static void log(Object... objs) {
