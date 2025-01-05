@@ -3,7 +3,6 @@ package mixac1.dangerrpg.capability;
 import java.util.ArrayList;
 import java.util.Set;
 
-import mixac1.dangerrpg.config.DangerConfig;
 import mixac1.dangerrpg.util.ArmorSystem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.*;
@@ -32,7 +31,7 @@ import mixac1.dangerrpg.util.IMultiplier.MultiplierSQRT;
 
 public abstract class RPGItemHelper {
 
-    public static final Multiplier EXP_MUL = new MultiplierMul(DangerConfig.expMul);
+    public static final Multiplier EXP_MUL = new MultiplierMul(ItemConfig.d.expMul);
 
     public static final Multiplier DUR_MUL = new MultiplierSQRT(2f);
 
@@ -62,7 +61,7 @@ public abstract class RPGItemHelper {
     }
 
     public static void registerParamsItemMod(Item item, RPGItemData map) {
-        map.registerIADynamic(ItemAttributes.MAX_EXP, DangerConfig.startMaxExp, EXP_MUL);
+        map.registerIADynamic(ItemAttributes.MAX_EXP, ItemConfig.d.startMaxExp, EXP_MUL);
 
         float durab, ench;
         RPGItemComponent comp;
@@ -302,7 +301,7 @@ public abstract class RPGItemHelper {
             }
             int level = (int) ItemAttributes.LEVEL.getChecked(stack);
 
-            if (level < DangerConfig.maxLevel) {
+            if (level < ItemConfig.d.maxLevel) {
                 float currEXP = ItemAttributes.CURR_EXP.getChecked(stack);
                 float maxEXP = ItemAttributes.MAX_EXP.getChecked(stack);
 
@@ -310,7 +309,7 @@ public abstract class RPGItemHelper {
 
                 while (currEXP >= maxEXP) {
                     instantLvlUp(stack);
-                    if (++level < DangerConfig.maxLevel) {
+                    if (++level < ItemConfig.d.maxLevel) {
                         currEXP -= maxEXP;
                     } else {
                         currEXP = maxEXP;

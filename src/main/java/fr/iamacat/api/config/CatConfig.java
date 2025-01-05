@@ -12,7 +12,6 @@ import java.util.*;
 // TODO ADD NON CATEGORY CONFIG SUPPORT
 // TODO ADD GUI INGAME CONFIG
 // TODO MADE A CRASH REPORT IF A CATEGORY IS NOT REGISTERED TO "categories" but still used
-// TODO SUPPORT MAP/ANOTHER OBJECT IN loadConfig ,like in saveConfigForKey
 public class CatConfig {
 
     protected PropertyManager pM = new PropertyManager();
@@ -58,23 +57,24 @@ public class CatConfig {
                     writer.write("#########################################################################################################\n");
                 }
                 writer.write(VERSION_KEY + "=" + CONFIG_VERSION + "\n");
-                pM.registeredProperties.forEach((key, configValue) -> {
-                    if (key.startsWith(category + ".")) {
-                        String keyWithoutCategory = key.substring((category + ".").length());
+                pM.properties.forEach((key, value) -> {
+                    String keyString = key.toString();
+                    if (keyString.startsWith(category + ".")) {
+                        String keyWithoutCategory = keyString.substring((category + ".").length());
                         String existingValue = existingProperties.getProperty(wrapKey(category + "." + keyWithoutCategory));
-                        String val = pM.properties.getProperty(key).split(" # ")[0];
-                        String comment = pM.properties.getProperty(key).split(" # ").length > 1 ? pM.properties.getProperty(key).split(" # ")[1] : "";
+                        String val = value.toString();
+                        String comment = "";
+                        int commentIndex = val.indexOf(" # ");
+                        if (commentIndex != -1) {
+                            comment = val.substring(commentIndex + 3); // Extract the comment
+                            val = val.substring(0, commentIndex); // Extract the value without comment
+                        }
                         try {
                             writer.write("\n");
                             if (!comment.isEmpty()) {
                                 writer.write(addHashesToLines(comment));
                             }
-                            String finalValue;
-                            if (configValue.resetValueAtGameLaunch) {
-                                finalValue = serializeValue(configValue.defaultValue);
-                            } else {
-                                finalValue = existingValue == null || existingValue.trim().isEmpty() ? val : existingValue;
-                            }
+                            String finalValue = existingValue == null || existingValue.trim().isEmpty() ? val : existingValue;
                             writer.write(wrapKey(category + "." + keyWithoutCategory) + "=" + finalValue + "\n");
                         } catch (IOException e) {
                             CatLogger.logger.error("Error when writing the configuration: {}", e.getMessage());
@@ -89,9 +89,6 @@ public class CatConfig {
             updateStaticFields(category);
         }
     }
-    public void postLoadConfig() {
-        CatLogger.logger.error("Please implement postLoadConfig method from CatConfig to use it");
-    }
 
     private String addHashesToLines(String text) {
         StringBuilder result = new StringBuilder();
@@ -104,31 +101,18 @@ public class CatConfig {
         return result.toString();
     }
 
-    public void saveConfigForKey(String category, String key, Object value) {
+    public void saveConfigForKey(String category, String key, String value) {
         File configFile = new File(configFolder, category + ".cfg");
         CatUtils.createFileIfNotExists(configFile);
         String fullKey = category + "." + key;
-        String valueToSave;
-        if (value instanceof List) {
-            List<?> itemList = (List<?>) value;
-            StringBuilder sb = new StringBuilder();
-            String indent = new String(new char[fullKey.length() + 1]).replace('\0', ' ');
-            for (Object item : itemList) {
-                sb.append(indent).append(item).append("\n");
-            }
-            valueToSave = sb.toString().trim();
-        } else {
-            valueToSave = serializeValue(value);
-        }
-
-        pM.properties.setProperty(fullKey, valueToSave);
+        pM.properties.setProperty(fullKey, value);
         List<String> lines = new ArrayList<>();
         boolean lineFound = false;
         try (BufferedReader reader = new BufferedReader(new FileReader(configFile))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith(fullKey + "=")) {
-                    lines.add(fullKey + "=" + valueToSave);
+                    lines.add(fullKey + "=" + value);
                     lineFound = true;
                 } else {
                     lines.add(line);
@@ -138,11 +122,9 @@ public class CatConfig {
             CatLogger.logger.error("Error reading configuration file: {}", e.getMessage());
             return;
         }
-
         if (!lineFound) {
-            lines.add(fullKey + "=" + valueToSave);
+            lines.add(fullKey + "=" + value);
         }
-
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(configFile, false))) {
             for (String line : lines) {
                 writer.write(line + "\n");
@@ -172,47 +154,7 @@ public class CatConfig {
         }
     }
 
-
     private String wrapKey(String key) {
         return key.contains(" ") ? "\"" + key + "\"" : key;
     }
-
-    private String serializeValue(Object value) {
-        if (value instanceof Boolean) {
-            return Boolean.toString((Boolean) value);
-        } else if (value instanceof Set) {
-            return String.join(",", (Set<String>) value);
-        } else if (value instanceof Map) {
-            Map<String, String> map = (Map<String, String>) value;
-            StringBuilder serializedMap = new StringBuilder();
-            for (Map.Entry<String, String> entry : map.entrySet()) {
-                if (serializedMap.length() > 0) {
-                    serializedMap.append(",");
-                }
-                serializedMap.append(entry.getKey()).append("=").append(entry.getValue());
-            }
-            return serializedMap.toString();
-        } else if (value instanceof String[]) {
-            return String.join(",", (String[]) value);
-        } else if (value instanceof List) {
-            StringBuilder sb = new StringBuilder();
-            for (Object item : (List<?>) value) {
-                sb.append(item).append(",");
-            }
-            return sb.toString().replaceAll(",$", ""); // Remove the trailing comma
-        } else if (value instanceof Double) {
-            return Double.toString((Double) value);
-        } else if (value instanceof Float) {
-            return Float.toString((Float) value);
-        } else if (value instanceof Integer) {
-            return Integer.toString((Integer) value);
-        } else if (value instanceof Long) {
-            return Long.toString((Long) value);
-        } else {
-            return value.toString();
-        }
-    }
-
-
-
 }

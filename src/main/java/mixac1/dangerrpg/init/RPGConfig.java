@@ -95,11 +95,106 @@ public class RPGConfig {
 
     public static class ItemConfig extends RPGConfigCommon {
 
+        public static class Data implements Serializable {
+
+            public boolean isAllItemsRPGable = true;
+            public boolean canUpInTable = true;
+            public int maxLevel = 15;
+            public int startMaxExp = 100;
+            public float expMul = 1.20f;
+
+            public int gemStartLvl = 5;
+            public int gemLvlUpStep = 5;
+        }
+
+        public static Data d = new Data();
 
         public static HashSet<String> activeRPGItems = new HashSet<>();
 
         public ItemConfig(String fileName) {
             super(fileName);
+        }
+
+        @Override
+        protected void init() {
+            category.setComment(
+                "FAQ:\n" + "Q: How do activate RPG item?\n"
+                    + "A: Take name of item frome the 'itemList' and put it to the 'activeRPGItems' list.\n"
+                    + "Or you can enable flag 'isAllItemsRPGable' for active all items.\n"
+                    + "\n"
+                    + "Q: How do congigure any item?\n"
+                    + "A: Take name of item frome the 'itemList' and put it to the 'needCustomSetting' list.\n"
+                    + "After this, run the game, exit from game and reopen this config.\n"
+                    + "You be able find generated element for configure that item.");
+
+            save();
+        }
+
+        @Override
+        public void load() {
+            d.isAllItemsRPGable = config.getBoolean(
+                "isAllItemsRPGable",
+                category.getName(),
+                d.isAllItemsRPGable,
+                "All weapons, tools , armors are RPGable (dangerous) (true/false)");
+
+            d.canUpInTable = config.getBoolean(
+                "canUpInTable",
+                category.getName(),
+                d.canUpInTable,
+                "Items can be upgrade in LevelUp Table without creative mode (true/false) \nLevelUp Table is invisible now");
+
+            d.maxLevel = config
+                .getInt("maxLevel", category.getName(), d.maxLevel, 1, Integer.MAX_VALUE, "Set max level of RPG items");
+
+            d.startMaxExp = config.getInt(
+                "startMaxExp",
+                category.getName(),
+                d.startMaxExp,
+                0,
+                Integer.MAX_VALUE,
+                "Set start needed expirience for RPG items");
+
+            d.expMul = config.getFloat(
+                "expMul",
+                category.getName(),
+                d.expMul,
+                0f,
+                Float.MAX_VALUE,
+                "Set expirience multiplier for RPG items");
+
+            d.gemStartLvl = config.getInt(
+                "gemStartLvl",
+                category.getName(),
+                d.gemStartLvl,
+                1,
+                Integer.MAX_VALUE,
+                "Set default start gem's level");
+
+            d.gemLvlUpStep = config.getInt(
+                "gemLvlUpStep",
+                category.getName(),
+                d.gemLvlUpStep,
+                1,
+                Integer.MAX_VALUE,
+                "Set default level up gem's step");
+
+            save();
+        }
+
+        @Override
+        public void postLoadPre() {
+            ArrayList<String> names = RPGHelper.getItemNames(RPGCapability.rpgItemRegistr.keySet(), true, false);
+            Property prop = getPropertyStrings(
+                "activeRPGItems",
+                names.toArray(new String[0]),
+                "Set active RPG items (activated if 'isAllItemsRPGable' is false) (true/false)",
+                false);
+            if (!d.isAllItemsRPGable) {
+                activeRPGItems = new HashSet<>(Arrays.asList(prop.getStringList()));
+            }
+
+            save();
         }
 
         @Override
@@ -124,16 +219,6 @@ public class RPGConfig {
                 true);
 
             save();
-        }
-
-        @Override
-        public void createTransferData() {
-
-        }
-
-        @Override
-        public void extractTransferData(byte[] transferData) {
-
         }
 
         protected void customConfig(HashMap<Item, RPGItemData> map) {
@@ -209,6 +294,16 @@ public class RPGConfig {
 
             prop.set(defStr);
             return attr.getValue().mul;
+        }
+
+        @Override
+        public void createTransferData() {
+            transferData = Utils.serialize(d);
+        }
+
+        @Override
+        public void extractTransferData(byte[] transferData) {
+            d = Utils.deserialize(transferData);
         }
     }
 

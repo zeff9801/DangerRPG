@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import mixac1.dangerrpg.config.DangerConfig;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
@@ -244,7 +243,7 @@ public abstract class RPGCapability {
         for (Entry<Item, RPGItemData> it : rpgItemRegistr.entrySet()) {
             RPGItemHelper.registerParamsDefault(it.getKey(), it.getValue());
             it.getValue().rpgComponent.registerAttributes(it.getKey(), it.getValue());
-            if (it.getKey() instanceof Gem || DangerConfig.isAllItemsRPGable
+            if (it.getKey() instanceof Gem || ItemConfig.d.isAllItemsRPGable
                 || ItemConfig.activeRPGItems.contains(it.getKey().delegate.name())) {
                 rpgItemRegistr.get(it.getKey()).isActivated = true;
                 DangerRPG.infoLog(
