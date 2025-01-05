@@ -2,6 +2,8 @@ package mixac1.dangerrpg.item.gem;
 
 import java.util.HashSet;
 
+import mixac1.dangerrpg.DangerRPG;
+import mixac1.dangerrpg.config.DangerConfig;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -9,7 +11,6 @@ import net.minecraft.item.ItemStack;
 
 import mixac1.dangerrpg.capability.GemAttributes;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
-import mixac1.dangerrpg.init.RPGConfig.MainConfig;
 import mixac1.dangerrpg.util.IMultiplier.MultiplierAdd;
 import mixac1.dangerrpg.util.RPGHelper;
 import mixac1.dangerrpg.util.Tuple.Stub;
@@ -40,7 +41,7 @@ public class GemAMPureDamage extends GemAttackModifier {
                 float value = Utils.alignment(damage.value1 * GemAttributes.PERCENT.get(gem, player), 0, tmp);
                 target.setHealth(tmp - value);
 
-                if (MainConfig.d.mainEnableGemEventsToChat) {
+                if (DangerConfig.mainEnableGemEventsToChat) {
                     RPGHelper
                         .msgToChat(player, String.format("%s: additional damage %.2f", gem.getDisplayName(), value));
                 }

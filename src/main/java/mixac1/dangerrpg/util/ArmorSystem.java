@@ -2,6 +2,8 @@ package mixac1.dangerrpg.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import mixac1.dangerrpg.DangerRPG;
+import mixac1.dangerrpg.config.DangerConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,7 +17,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mixac1.dangerrpg.capability.ItemAttributes;
 import mixac1.dangerrpg.capability.PlayerAttributes;
-import mixac1.dangerrpg.init.RPGConfig.ClientConfig;
 import mixac1.dangerrpg.init.RPGOther.RPGDamageSource;
 
 public class ArmorSystem {
@@ -43,7 +44,7 @@ public class ArmorSystem {
     public static float getTotalArmor(DamageSource source) {
         float value = 0;
         Minecraft mc = Minecraft.getMinecraft();
-        float damage = ClientConfig.d.guiDamageForTestArmor * MAX_PHISICAL_ARMOR;
+        float damage = DangerConfig.guiDamageForTestArmor * MAX_PHISICAL_ARMOR;
 
         ArrayList<ArmorProperties> list = getArrayArmorProperties(
             mc.thePlayer,

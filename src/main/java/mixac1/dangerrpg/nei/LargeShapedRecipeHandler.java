@@ -6,6 +6,7 @@ import static codechicken.lib.gui.GuiDraw.drawTexturedModalRect;
 import java.util.ArrayList;
 import java.util.List;
 
+import mixac1.dangerrpg.config.DangerConfig;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -22,7 +23,6 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.client.gui.GuiRPGWorkbench;
-import mixac1.dangerrpg.init.RPGConfig.ClientConfig;
 import mixac1.dangerrpg.inventory.ContainerRPGWorkbench;
 import mixac1.dangerrpg.recipe.LargeShapedRecipe;
 import mixac1.dangerrpg.util.Utils;
@@ -47,7 +47,7 @@ public class LargeShapedRecipeHandler extends TemplateRecipeHandler {
                 CachedLargeShapedRecipe recipe = null;
                 if (irecipe instanceof LargeShapedRecipe) {
                     recipe = new CachedLargeShapedRecipe((LargeShapedRecipe) irecipe);
-                } else if (ClientConfig.d.neiShowShapedRecipe) {
+                } else if (DangerConfig.neiShowShapedRecipe) {
                     if (irecipe instanceof ShapedRecipes) {
                         recipe = new CachedLargeShapedRecipe((ShapedRecipes) irecipe);
                     } else if (irecipe instanceof ShapedOreRecipe) {
@@ -75,7 +75,7 @@ public class LargeShapedRecipeHandler extends TemplateRecipeHandler {
                 CachedLargeShapedRecipe recipe = null;
                 if (irecipe instanceof LargeShapedRecipe) {
                     recipe = new CachedLargeShapedRecipe((LargeShapedRecipe) irecipe);
-                } else if (ClientConfig.d.neiShowShapedRecipe) {
+                } else if (DangerConfig.neiShowShapedRecipe) {
                     if (irecipe instanceof ShapedRecipes) {
                         recipe = new CachedLargeShapedRecipe((ShapedRecipes) irecipe);
                     } else if (irecipe instanceof ShapedOreRecipe) {
@@ -100,7 +100,7 @@ public class LargeShapedRecipeHandler extends TemplateRecipeHandler {
             CachedLargeShapedRecipe recipe = null;
             if (irecipe instanceof LargeShapedRecipe) {
                 recipe = new CachedLargeShapedRecipe((LargeShapedRecipe) irecipe);
-            } else if (ClientConfig.d.neiShowShapedRecipe) {
+            } else if (DangerConfig.neiShowShapedRecipe) {
                 if (irecipe instanceof ShapedRecipes) {
                     recipe = new CachedLargeShapedRecipe((ShapedRecipes) irecipe);
                 } else if (irecipe instanceof ShapedOreRecipe) {

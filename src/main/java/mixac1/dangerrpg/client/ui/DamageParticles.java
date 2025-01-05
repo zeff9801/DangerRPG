@@ -1,5 +1,7 @@
 package mixac1.dangerrpg.client.ui;
 
+import mixac1.dangerrpg.DangerRPG;
+import mixac1.dangerrpg.config.DangerConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.particle.EntityFX;
@@ -12,7 +14,9 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import mixac1.dangerrpg.init.RPGConfig;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @SideOnly(Side.CLIENT)
 public class DamageParticles extends EntityFX {
@@ -21,19 +25,32 @@ public class DamageParticles extends EntityFX {
     private static final float GRAVITY = 0.1F;
     private static final int LIFESPAN = 12;
     private static final double PARTICLE_SCALE_FACTOR = 0.008D;
-    private static final double MAX_PARTICLE_SCALE = RPGConfig.ClientConfig.Data.size2 * 3.0D;
+    private static final double MAX_PARTICLE_SCALE = DangerConfig.size2 * 3.0D;
 
     private final String text;
     private final int damage;
     private boolean grow = true;
 
+    private static final Map<String, Integer> colorMap = new HashMap<>();
+
+    static {
+        colorMap.put("RED", 0xFF0000);
+        colorMap.put("GREEN", 0x00FF00);
+        colorMap.put("BLUE", 0x0000FF);
+        colorMap.put("YELLOW", 0xFFFF00);
+        colorMap.put("ORANGE", 0xFFA500);
+        colorMap.put("WHITE", 0xFFFFFF);
+        colorMap.put("BLACK", 0x000000);
+        colorMap.put("PURPLE", 0x800080);
+    }
+
     public DamageParticles(int damage, World world, double parX, double parY, double parZ, double parMotionX,
-        double parMotionY, double parMotionZ) {
+                           double parMotionY, double parMotionZ) {
         super(world, parX, parY, parZ, parMotionX, parMotionY, parMotionZ);
         particleTextureJitterX = 0.0F;
         particleTextureJitterY = 0.0F;
         particleGravity = GRAVITY;
-        particleScale = (float) RPGConfig.ClientConfig.Data.size2;
+        particleScale = (float) DangerConfig.size2;
         particleMaxAge = LIFESPAN;
         this.damage = damage;
         this.text = Integer.toString(Math.abs(damage));
@@ -45,7 +62,7 @@ public class DamageParticles extends EntityFX {
 
     @Override
     public void renderParticle(Tessellator tessellator, float partialTicks, float p_70539_3_, float p_70539_4_,
-        float p_70539_5_, float p_70539_6_, float p_70539_7_) {
+                               float p_70539_5_, float p_70539_6_, float p_70539_7_) {
         float f11 = (float) (prevPosX + (posX - prevPosX) * (double) partialTicks - interpPosX);
         float f12 = (float) (prevPosY + (posY - prevPosY) * (double) partialTicks - interpPosY);
         float f13 = (float) (prevPosZ + (posZ - prevPosZ) * (double) partialTicks - interpPosZ);
@@ -75,7 +92,7 @@ public class DamageParticles extends EntityFX {
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-        int color = damage < 0 ? RPGConfig.ClientConfig.Data.healColor : RPGConfig.ClientConfig.Data.damageColor;
+        int color = damage < 0 ? colorMap.get(DangerConfig.healColor) : colorMap.get(DangerConfig.damageColor);
         final FontRenderer fontRenderer = mc.fontRenderer;
         fontRenderer.drawStringWithShadow(
             text,

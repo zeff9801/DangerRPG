@@ -1,5 +1,7 @@
 package mixac1.dangerrpg.proxy;
 
+import mixac1.dangerrpg.DangerRPG;
+import mixac1.dangerrpg.config.DangerConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
@@ -26,7 +28,7 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void displayDamageDealt(EntityLivingBase entity) {
-        if (!entity.worldObj.isRemote || !RPGConfig.ClientConfig.Data.showDamageParticles) return;
+        if (!entity.worldObj.isRemote || !DangerConfig.showDamageParticles) return;
 
         int currentHealth = (int) Math.ceil(entity.getHealth());
 
@@ -44,7 +46,7 @@ public class ClientProxy extends CommonProxy {
 
     private void displayParticle(EntityLivingBase entity, int damage) {
         if (damage == 0
-            || (!entity.canEntityBeSeen(Minecraft.getMinecraft().thePlayer) && !RPGConfig.ClientConfig.Data.showAlways))
+            || (!entity.canEntityBeSeen(Minecraft.getMinecraft().thePlayer) && !DangerConfig.showAlways))
             return;
 
         World world = entity.worldObj;

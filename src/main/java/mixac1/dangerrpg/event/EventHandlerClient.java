@@ -1,5 +1,6 @@
 package mixac1.dangerrpg.event;
 
+import mixac1.dangerrpg.config.DangerConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -15,7 +16,6 @@ import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.event.GuiModeChangeEvent;
 import mixac1.dangerrpg.client.gui.GuiMode;
 import mixac1.dangerrpg.client.gui.RPGGuiIngame;
-import mixac1.dangerrpg.init.RPGConfig.ClientConfig;
 import mixac1.dangerrpg.init.RPGGuiHandlers;
 import mixac1.dangerrpg.init.RPGKeyBinds;
 import mixac1.dangerrpg.init.RPGNetwork;
@@ -34,16 +34,16 @@ public class EventHandlerClient {
 
     @SubscribeEvent
     public void renderRPGGuiIngame(RenderGameOverlayEvent.Post event) {
-        if (!event.isCancelable() && event.type == ElementType.ALL && ClientConfig.d.guiEnableHUD) {
+        if (!event.isCancelable() && event.type == ElementType.ALL && DangerConfig.guiEnableHUD) {
             RPGGuiIngame.INSTANCE.renderGameOverlay(event.resolution);
         }
     }
 
     @SubscribeEvent
     public void renderDisableOldBars(RenderGameOverlayEvent.Pre event) {
-        if (ClientConfig.d.guiEnableHUD) {
+        if (DangerConfig.guiEnableHUD) {
             if (event.type == ElementType.HEALTH || event.type == ElementType.ARMOR
-                || (!ClientConfig.d.guiEnableDefaultFoodBar && event.type == ElementType.FOOD)
+                || (!DangerConfig.guiEnableDefaultFoodBar && event.type == ElementType.FOOD)
                 || event.type == ElementType.AIR) {
                 event.setCanceled(true);
             }

@@ -7,12 +7,11 @@ import cpw.mods.fml.common.Loader;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
+
 // TODO ADD NON CATEGORY CONFIG SUPPORT
 // TODO ADD GUI INGAME CONFIG
+// TODO MADE A CRASH REPORT IF A CATEGORY IS NOT REGISTERED TO "categories" but still used
 public class CatConfig {
 
     protected PropertyManager pM = new PropertyManager();
@@ -20,7 +19,7 @@ public class CatConfig {
     private final List<String> categories;
     protected static String CONFIG_VERSION = "1.0";
     private static final String VERSION_KEY = "config.version";
-    protected String config_comment_header;
+    protected Map<String, String> configCommentHeaders = new HashMap<>();
 
     public CatConfig(String folderName, List<String> categories) {
         if (categories == null || categories.isEmpty()) {
@@ -32,8 +31,8 @@ public class CatConfig {
         registerProperties();
     }
 
-    protected void setConfigCommentHeader(String comment){
-        this.config_comment_header = comment;
+    protected void setConfigCommentHeader(String category, String comment) {
+        configCommentHeaders.put(category, comment);
     }
 
     public void loadConfig() {
@@ -51,9 +50,10 @@ public class CatConfig {
                 writer.write("# " + category + " Configuration\n");
                 writer.write("# " + new Date() + "\n");
                 writer.write("\n");
-                if (!config_comment_header.isEmpty()) {
+                String configCommentHeader = configCommentHeaders.getOrDefault(category, "");
+                if (!configCommentHeader.isEmpty()) {
                     writer.write("#########################################################################################################\n");
-                    writer.write(addHashesToLines(config_comment_header));
+                    writer.write(addHashesToLines(configCommentHeader));
                     writer.write("#########################################################################################################\n");
                 }
                 writer.write(VERSION_KEY + "=" + CONFIG_VERSION + "\n");
@@ -61,7 +61,7 @@ public class CatConfig {
                     String keyString = key.toString();
                     if (keyString.startsWith(category + ".")) {
                         String keyWithoutCategory = keyString.substring((category + ".").length());
-                        String existingValue = existingProperties.getProperty(category + "." + keyWithoutCategory);
+                        String existingValue = existingProperties.getProperty(wrapKey(category + "." + keyWithoutCategory));
                         String val = value.toString();
                         String comment = "";
                         int commentIndex = val.indexOf(" # ");
@@ -72,10 +72,10 @@ public class CatConfig {
                         try {
                             writer.write("\n");
                             if (!comment.isEmpty()) {
-                                writer.write("# " + comment + "\n");
+                                writer.write(addHashesToLines(comment));
                             }
                             String finalValue = existingValue == null || existingValue.trim().isEmpty() ? val : existingValue;
-                            writer.write(category + "." + keyWithoutCategory + "=" + finalValue + "\n");
+                            writer.write(wrapKey(category + "." + keyWithoutCategory) + "=" + finalValue + "\n");
                         } catch (IOException e) {
                             CatLogger.logger.error("Error when writing the configuration: {}", e.getMessage());
                         }
@@ -90,7 +90,7 @@ public class CatConfig {
         }
     }
 
-    private static String addHashesToLines(String text) {
+    private String addHashesToLines(String text) {
         StringBuilder result = new StringBuilder();
         String[] lines = text.split("\n");
 
@@ -152,5 +152,9 @@ public class CatConfig {
         } catch (Exception e) {
             CatLogger.logger.error("Failed to update static fields: {}", e.getMessage());
         }
+    }
+
+    private String wrapKey(String key) {
+        return key.contains(" ") ? "\"" + key + "\"" : key;
     }
 }

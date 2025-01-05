@@ -2,17 +2,15 @@ package mixac1.dangerrpg;
 
 import cpw.mods.fml.common.event.*;
 import mixac1.dangerrpg.config.DangerConfig;
-import net.minecraft.util.StatCollector;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import mixac1.dangerrpg.util.DangerLogger;
+import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
-import mixac1.dangerrpg.init.RPGConfig.MainConfig;
 import mixac1.dangerrpg.proxy.CommonProxy;
 import mixac1.dangerrpg.util.Utils;
 
@@ -21,7 +19,7 @@ import mixac1.dangerrpg.util.Utils;
     name = DangerRPG.MODNAME,
     version = DangerRPG.VERSION,
     acceptedMinecraftVersions = DangerRPG.ACCEPTED_VERSION,
-    //dependencies = "required-after:Forge" + "required-after:iamacat_core")
+    //dependencies = "required-after:Forge" + "required-after:iamacat_api")
     dependencies = "required-after:Forge" )
 public class DangerRPG {
     public static DangerConfig config;
@@ -36,10 +34,9 @@ public class DangerRPG {
     @SidedProxy(clientSide = "mixac1.dangerrpg.proxy.ClientProxy", serverSide = "mixac1.dangerrpg.proxy.CommonProxy")
     public static CommonProxy proxy;
 
-    public static final Logger logger = LogManager.getLogger(DangerRPG.MODID);
-
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        // TODO GET RID OF THIS
         if (Loader.isModLoaded("torohealthmod")) {
             throw new RuntimeException(
                 "Custom Damage Particle mod is installed! Crashing the game Because DangerRPG add a thing like Custom Damage Particles mod, so pls remove DangerRPG or Custom Damage Particle");
@@ -63,12 +60,12 @@ public class DangerRPG {
             buf.append(obj != null ? obj.toString() : "(null)")
                 .append(" ");
         }
-        DangerRPG.logger.info(buf.toString());
+        DangerLogger.logger.info(buf.toString());
     }
 
     public static void infoLog(Object... objs) {
-        if (MainConfig.d.mainEnableInfoLog) {
-            DangerRPG.logger.info(Utils.toString(objs));
+        if (DangerConfig.mainEnableInfoLog) {
+            DangerLogger.logger.info(Utils.toString(objs));
         }
     }
 
