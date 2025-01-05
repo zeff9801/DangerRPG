@@ -3,7 +3,7 @@ package mixac1.dangerrpg.item.gem;
 import java.util.HashSet;
 
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.config.DangerConfig;
+import mixac1.dangerrpg.init.RPGConfig;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -40,7 +40,7 @@ public class GemAMCrit extends GemAttackModifier {
             damage.value1 += value;
             disableSet.add(getClass());
 
-            if (DangerConfig.mainEnableGemEventsToChat) {
+            if (RPGConfig.MainConfig.d.mainEnableGemEventsToChat) {
                 RPGHelper.msgToChat(player, String.format("%s: additional damage %.2f", gem.getDisplayName(), value));
             }
         }

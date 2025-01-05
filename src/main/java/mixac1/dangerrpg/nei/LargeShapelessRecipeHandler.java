@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import mixac1.dangerrpg.config.DangerConfig;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
@@ -14,6 +13,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import mixac1.dangerrpg.DangerRPG;
+import mixac1.dangerrpg.init.RPGConfig.ClientConfig;
 import mixac1.dangerrpg.inventory.ContainerRPGWorkbench;
 import mixac1.dangerrpg.recipe.LargeShapelessRecipe;
 
@@ -36,7 +36,7 @@ public class LargeShapelessRecipeHandler extends LargeShapedRecipeHandler {
                 CachedLargeShapelessRecipe recipe = null;
                 if (irecipe instanceof LargeShapelessRecipe) {
                     recipe = largeShapelessRecipe((LargeShapelessRecipe) irecipe);
-                } else if (DangerConfig.neiShowShapedRecipe) {
+                } else if (ClientConfig.d.neiShowShapedRecipe) {
                     if (irecipe instanceof ShapelessRecipes) {
                         recipe = shapelessRecipe((ShapelessRecipes) irecipe);
                     } else if (irecipe instanceof ShapelessOreRecipe) {
@@ -63,7 +63,7 @@ public class LargeShapelessRecipeHandler extends LargeShapedRecipeHandler {
                 CachedLargeShapelessRecipe recipe = null;
                 if (irecipe instanceof LargeShapelessRecipe) {
                     recipe = largeShapelessRecipe((LargeShapelessRecipe) irecipe);
-                } else if (DangerConfig.neiShowShapedRecipe) {
+                } else if (ClientConfig.d.neiShowShapedRecipe) {
                     if (irecipe instanceof ShapelessRecipes) {
                         recipe = shapelessRecipe((ShapelessRecipes) irecipe);
                     } else if (irecipe instanceof ShapelessOreRecipe) {
@@ -87,7 +87,7 @@ public class LargeShapelessRecipeHandler extends LargeShapedRecipeHandler {
             CachedLargeShapelessRecipe recipe = null;
             if (irecipe instanceof LargeShapelessRecipe) {
                 recipe = largeShapelessRecipe((LargeShapelessRecipe) irecipe);
-            } else if (DangerConfig.neiShowShapedRecipe) {
+            } else if (ClientConfig.d.neiShowShapedRecipe) {
                 if (irecipe instanceof ShapelessRecipes) {
                     recipe = shapelessRecipe((ShapelessRecipes) irecipe);
                 } else if (irecipe instanceof ShapelessOreRecipe) {

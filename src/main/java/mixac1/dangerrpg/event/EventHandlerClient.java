@@ -1,6 +1,6 @@
 package mixac1.dangerrpg.event;
 
-import mixac1.dangerrpg.config.DangerConfig;
+import mixac1.dangerrpg.init.RPGConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -34,16 +34,16 @@ public class EventHandlerClient {
 
     @SubscribeEvent
     public void renderRPGGuiIngame(RenderGameOverlayEvent.Post event) {
-        if (!event.isCancelable() && event.type == ElementType.ALL && DangerConfig.guiEnableHUD) {
+        if (!event.isCancelable() && event.type == ElementType.ALL && RPGConfig.ClientConfig.d.guiEnableHUD) {
             RPGGuiIngame.INSTANCE.renderGameOverlay(event.resolution);
         }
     }
 
     @SubscribeEvent
     public void renderDisableOldBars(RenderGameOverlayEvent.Pre event) {
-        if (DangerConfig.guiEnableHUD) {
+        if (RPGConfig.ClientConfig.d.guiEnableHUD) {
             if (event.type == ElementType.HEALTH || event.type == ElementType.ARMOR
-                || (!DangerConfig.guiEnableDefaultFoodBar && event.type == ElementType.FOOD)
+                || (!RPGConfig.ClientConfig.d.guiEnableDefaultFoodBar && event.type == ElementType.FOOD)
                 || event.type == ElementType.AIR) {
                 event.setCanceled(true);
             }

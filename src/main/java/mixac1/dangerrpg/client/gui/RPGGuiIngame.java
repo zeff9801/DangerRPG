@@ -2,7 +2,7 @@ package mixac1.dangerrpg.client.gui;
 
 import java.util.Objects;
 
-import mixac1.dangerrpg.config.DangerConfig;
+import mixac1.dangerrpg.init.RPGConfig;
 import mixac1.dangerrpg.util.ArmorSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -158,14 +158,14 @@ public class RPGGuiIngame extends Gui {
 
         renderEntityBar(
             mc.thePlayer,
-            DangerConfig.guiChargeOffsetX,
-            DangerConfig.guiPlayerHUDOffsetY,
-            DangerConfig.guiPlayerHUDIsInvert,
+            RPGConfig.ClientConfig.d.guiChargeOffsetX,
+            RPGConfig.ClientConfig.d.guiPlayerHUDOffsetY,
+            RPGConfig.ClientConfig.d.guiPlayerHUDIsInvert,
             res);
         renderChargeBar(
-            DangerConfig.guiChargeIsCentered ? (width - chargeW) / 2 : DangerConfig.guiChargeOffsetX,
-            height - DangerConfig.guiChargeOffsetY);
-        renderEnemyBar(DangerConfig.guiEnemyHUDOffsetX, DangerConfig.guiEnemyHUDOffsetY, res);
+            RPGConfig.ClientConfig.d.guiChargeIsCentered ? (width - chargeW) / 2 : RPGConfig.ClientConfig.d.guiChargeOffsetX,
+            height - RPGConfig.ClientConfig.d.guiChargeOffsetY);
+        renderEnemyBar(RPGConfig.ClientConfig.d.guiEnemyHUDOffsetX, RPGConfig.ClientConfig.d.guiEnemyHUDOffsetY, res);
 
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_BLEND);
@@ -222,7 +222,7 @@ public class RPGGuiIngame extends Gui {
             boolean isPlayer = entity instanceof EntityPlayer;
             boolean hasMeleeDamage = iRPG != null && (iRPG.getEAMeleeDamage(entity) != null || isPlayer);
             boolean hasRangeDamage = iRPG != null && iRPG.getEARangeDamage(entity) != null;
-            boolean hasFood = !DangerConfig.guiEnableDefaultFoodBar && entity == mc.thePlayer
+            boolean hasFood = !RPGConfig.ClientConfig.d.guiEnableDefaultFoodBar && entity == mc.thePlayer
                 && Objects.requireNonNull(mc.thePlayer)
                     .getFoodStats()
                     .getFoodLevel() < 20;
@@ -234,7 +234,7 @@ public class RPGGuiIngame extends Gui {
             int offsetMeleeDmg = 0;
             int offsetRangeDmg = 0;
 
-            if (isPlayer && DangerConfig.guiTwiceHealthManaBar) {
+            if (isPlayer && RPGConfig.ClientConfig.d.guiTwiceHealthManaBar) {
                 drawTexturedModalRect(
                     offsetX + invert(barIconX),
                     offsetY + barIconY + yFal,
@@ -480,7 +480,7 @@ public class RPGGuiIngame extends Gui {
             }
 
             if (mode.isDigital) {
-                if (isPlayer && DangerConfig.guiTwiceHealthManaBar) {
+                if (isPlayer && RPGConfig.ClientConfig.d.guiTwiceHealthManaBar) {
                     s = Utils.toString(
                         genValueStr(entity.getHealth() + entity.getAbsorptionAmount()),
                         "/",

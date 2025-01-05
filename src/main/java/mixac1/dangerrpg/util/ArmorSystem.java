@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import mixac1.dangerrpg.DangerRPG;
-import mixac1.dangerrpg.config.DangerConfig;
+import mixac1.dangerrpg.init.RPGConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -44,7 +44,7 @@ public class ArmorSystem {
     public static float getTotalArmor(DamageSource source) {
         float value = 0;
         Minecraft mc = Minecraft.getMinecraft();
-        float damage = DangerConfig.guiDamageForTestArmor * MAX_PHISICAL_ARMOR;
+        float damage = RPGConfig.ClientConfig.d.guiDamageForTestArmor * MAX_PHISICAL_ARMOR;
 
         ArrayList<ArmorProperties> list = getArrayArmorProperties(
             mc.thePlayer,

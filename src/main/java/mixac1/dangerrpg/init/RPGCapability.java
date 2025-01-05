@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import mixac1.dangerrpg.config.DangerConfig;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
@@ -42,7 +41,6 @@ import mixac1.dangerrpg.capability.data.RPGEntityRegister.RPGEntityData;
 import mixac1.dangerrpg.capability.data.RPGItemRegister;
 import mixac1.dangerrpg.capability.data.RPGItemRegister.RPGItemData;
 import mixac1.dangerrpg.init.RPGConfig.EntityConfig;
-import mixac1.dangerrpg.init.RPGConfig.ItemConfig;
 import mixac1.dangerrpg.item.gem.Gem;
 import rozmir.entity_extensions.IronGolemExtension;
 import rozmir.entity_extensions.SnowGolemExtension;
@@ -244,8 +242,8 @@ public abstract class RPGCapability {
         for (Entry<Item, RPGItemData> it : rpgItemRegistr.entrySet()) {
             RPGItemHelper.registerParamsDefault(it.getKey(), it.getValue());
             it.getValue().rpgComponent.registerAttributes(it.getKey(), it.getValue());
-            if (it.getKey() instanceof Gem || DangerConfig.isAllItemsRPGable
-                || ItemConfig.activeRPGItems.contains(it.getKey().delegate.name())) {
+            if (it.getKey() instanceof Gem || RPGConfig.ItemConfig.d.isAllItemsRPGable
+                || RPGConfig.ItemConfig.activeRPGItems.contains(it.getKey().delegate.name())) {
                 rpgItemRegistr.get(it.getKey()).isActivated = true;
                 DangerRPG.infoLog(
                     String.format(

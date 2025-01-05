@@ -4,7 +4,6 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.init.RPGCapability;
 import mixac1.dangerrpg.init.RPGConfig;
 
@@ -31,6 +30,15 @@ public class MsgSyncConfig implements IMessage {
             }
             RPGCapability.rpgEntityRegistr.extractTransferData(bytes);
         }
+
+        bytes = bytesFromBytes(buf);
+        if (bytes != null) {
+            if (RPGConfig.mainConfig.getTransferData() == null) {
+                RPGConfig.mainConfig.createTransferData();
+            }
+            RPGConfig.mainConfig.extractTransferData(bytes);
+        }
+
         bytes = bytesFromBytes(buf);
         if (bytes != null) {
             if (RPGConfig.itemConfig.getTransferData() == null) {
@@ -46,6 +54,14 @@ public class MsgSyncConfig implements IMessage {
             }
             RPGConfig.entityConfig.extractTransferData(bytes);
         }
+
+        bytes = bytesFromBytes(buf);
+        if (bytes != null) {
+            if (RPGConfig.mixinConfig.getTransferData() == null) {
+                RPGConfig.mixinConfig.createTransferData();
+            }
+            RPGConfig.mixinConfig.extractTransferData(bytes);
+        }
     }
 
     @Override
@@ -53,8 +69,10 @@ public class MsgSyncConfig implements IMessage {
         bytesToBytes(buf, RPGCapability.rpgItemRegistr.getTransferData());
         bytesToBytes(buf, RPGCapability.rpgEntityRegistr.getTransferData());
 
+        bytesToBytes(buf, RPGConfig.mainConfig.getTransferData());
         bytesToBytes(buf, RPGConfig.itemConfig.getTransferData());
         bytesToBytes(buf, RPGConfig.entityConfig.getTransferData());
+        bytesToBytes(buf, RPGConfig.mixinConfig.getTransferData());
     }
 
     public void bytesToBytes(ByteBuf buf, byte[] bytes) {

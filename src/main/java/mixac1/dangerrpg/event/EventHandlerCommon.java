@@ -2,7 +2,7 @@ package mixac1.dangerrpg.event;
 
 import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.api.event.ProjectileHitEvent;
-import mixac1.dangerrpg.config.DangerConfig;
+import mixac1.dangerrpg.init.RPGConfig;
 import mixac1.dangerrpg.util.RPGHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -18,7 +18,7 @@ public class EventHandlerCommon {
 
     @SubscribeEvent
     public void onPlayerLoggedInEvent(PlayerLoggedInEvent e) {
-        if (DangerConfig.mainEnableTransferConfig) {
+        if (RPGConfig.MainConfig.d.mainEnableTransferConfig) {
             RPGNetwork.net.sendTo(new MsgSyncConfig(), (EntityPlayerMP) e.player);
         }
     }

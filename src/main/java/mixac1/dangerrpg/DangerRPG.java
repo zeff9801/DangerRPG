@@ -1,8 +1,8 @@
 package mixac1.dangerrpg;
 
 import cpw.mods.fml.common.event.*;
-import mixac1.dangerrpg.config.DangerConfig;
 
+import mixac1.dangerrpg.init.RPGConfig;
 import mixac1.dangerrpg.util.DangerLogger;
 import net.minecraft.util.StatCollector;
 
@@ -22,7 +22,6 @@ import mixac1.dangerrpg.util.Utils;
     //dependencies = "required-after:Forge" + "required-after:iamacat_api")
     dependencies = "required-after:Forge" )
 public class DangerRPG {
-    public static DangerConfig config;
     public static final String MODNAME = "DangerRPG";
     public static final String MODID = "dangerrpg";
     public static final String VERSION = "1.1.4";
@@ -52,7 +51,6 @@ public class DangerRPG {
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
-        config.postLoadConfig();
     }
 
     public static void log(Object... objs) {
@@ -65,7 +63,7 @@ public class DangerRPG {
     }
 
     public static void infoLog(Object... objs) {
-        if (DangerConfig.mainEnableInfoLog) {
+        if (RPGConfig.MainConfig.d.mainEnableInfoLog) {
             DangerLogger.logger.info(Utils.toString(objs));
         }
     }

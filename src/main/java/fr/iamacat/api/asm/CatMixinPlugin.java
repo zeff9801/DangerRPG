@@ -83,6 +83,7 @@ public class CatMixinPlugin implements IMixinConfigPlugin {
         allMixins.addAll(serverMixins);
         return allMixins;
     }
+
     @Override
     public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
     }

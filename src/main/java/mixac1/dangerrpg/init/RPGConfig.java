@@ -53,53 +53,417 @@ public class RPGConfig {
         } else {
             dir.mkdir();
         }
-
     }
 
-   // @SideOnly(Side.CLIENT)
-   // public static ClientConfig clientConfig;
-  //  public static MainConfig mainConfig = new MainConfig("MainConfig");
+    @SideOnly(Side.CLIENT)
+    public static ClientConfig clientConfig;
+    public static MainConfig mainConfig = new MainConfig("MainConfig");
     public static ItemConfig itemConfig = new ItemConfig("ItemConfig");
     public static EntityConfig entityConfig = new EntityConfig("EntityConfig");
+    public static MixinConfig mixinConfig= new RPGConfig.MixinConfig("MixinConfig");;
 
     public static void load(FMLPreInitializationEvent e) {
-        //mainConfig.load();
+        mainConfig.load();
         itemConfig.load();
         entityConfig.load();
 
-        //if (DangerConfig.mainEnableTransferConfig) {
-           // mainConfig.createTransferData();
+        if (MainConfig.d.mainEnableTransferConfig) {
+            mainConfig.createTransferData();
             itemConfig.createTransferData();
             entityConfig.createTransferData();
-        //}
+            mixinConfig.createTransferData();
+        }
     }
 
     @SideOnly(Side.CLIENT)
     public static void loadClient(FMLPreInitializationEvent e) {
-       // clientConfig = new ClientConfig("ClientConfig");
-        //clientConfig.load();
+        clientConfig = new ClientConfig("ClientConfig");
+        clientConfig.load();
     }
 
     public static void postLoadPre(FMLPostInitializationEvent e) {
-       // mainConfig.postLoadPre();
+        mainConfig.postLoadPre();
         itemConfig.postLoadPre();
         entityConfig.postLoadPre();
+        mixinConfig.postLoadPre();
     }
 
     public static void postLoadPost(FMLPostInitializationEvent e) {
-        //mainConfig.postLoadPost();
+        mainConfig.postLoadPost();
         itemConfig.postLoadPost();
         entityConfig.postLoadPost();
+        mixinConfig.postLoadPost();
     }
 
+    public static class MainConfig extends RPGConfigCommon {
+
+        public static class Data implements Serializable {
+
+            public boolean mainEnableInfoLog = true;
+            public boolean mainEnableTransferConfig = false;
+            public boolean mainEnableGemEventsToChat = true;
+        }
+
+        public static Data d = new Data();
+
+        public MainConfig(String fileName) {
+            super(fileName);
+        }
+
+        @Override
+        protected void init() {
+            category.setComment(
+                "GENERAL INFO:\n" + "\n"
+                    + "How do config multipliers ('.mul')\n"
+                    + "You can use three types of multiplier:\n"
+                    + "ADD  'value'    - 'input parameter' + 'value'\n"
+                    + "MUL  'value'    - 'input parameter' * 'value'\n"
+                    + "SQRT 'value'    - 'input parameter' + sqrt('input parameter' * 'value')\n"
+                    + "HARD - not for using. There is a hard expression, but you can change it using other multipliers\n"
+                    + "\n");
+
+            save();
+        }
+
+        @Override
+        public void load() {
+            d.mainEnableInfoLog = config.getBoolean(
+                "mainEnableInfoLog",
+                category.getName(),
+                d.mainEnableInfoLog,
+                "Enable printing info message to log (true/false)");
+
+            d.mainEnableTransferConfig = config.getBoolean(
+                "mainEnableTransferConfig",
+                category.getName(),
+                d.mainEnableTransferConfig,
+                "Enable transfer config data from server to client (true/false)\nCan be errors. Synchronize the configuration better by other means.");
+
+            d.mainEnableGemEventsToChat = config.getBoolean(
+                "mainEnableGemEventsToChat",
+                category.getName(),
+                d.mainEnableGemEventsToChat,
+                "Enable printing gem's events to chat");
+
+            save();
+        }
+
+        @Override
+        public void createTransferData() {
+            transferData = Utils.serialize(d);
+        }
+
+        @Override
+        public void extractTransferData(byte[] transferData) {
+            d = Utils.deserialize(transferData);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static class ClientConfig extends RPGConfigCommon {
+
+        public static class Data implements Serializable {
+
+            public boolean guiEnableHUD = true;
+            public boolean guiEnableDefaultFoodBar = false;
+            public int guiPlayerHUDOffsetX = 10;
+            public int guiPlayerHUDOffsetY = 10;
+            public boolean guiPlayerHUDIsInvert = false;
+            public int guiEnemyHUDOffsetX = 10;
+            public int guiEnemyHUDOffsetY = 10;
+            public boolean guiEnemyHUDIsInvert = true;
+            public int guiChargeOffsetX = 0;
+            public int guiChargeOffsetY = 45;
+            public boolean guiChargeIsCentered = true;
+            public boolean guiTwiceHealthManaBar = false;
+            public int guiDafaultHUDMode = 1;
+            public int guiDamageForTestArmor = 25;
+
+            public boolean neiShowShapedRecipe = false;
+            private static final String[] acceptedColors = new String[] { "RED", "GREEN", "BLUE", "YELLOW", "ORANGE",
+                "WHITE", "BLACK", "PURPLE" };
+            public static Configuration config;
+            public static boolean showDamageParticles = true;
+            public static boolean showAlways = false;
+            public static Integer damageColor;
+            public static Integer healColor;
+            public static double size2 = 3.0;
+        }
+
+        public static Data d = new Data();
+
+        public ClientConfig(String fileName) {
+            super(fileName);
+        }
+
+        @Override
+        public void load() {
+            d.guiEnableHUD = config
+                .getBoolean("guiIsEnableHUD", category.getName(), d.guiEnableHUD, "Enable RPG HUD (true/false)");
+
+            d.guiEnableDefaultFoodBar = config.getBoolean(
+                "guiEnableDefaultFoodBar",
+                category.getName(),
+                d.guiEnableDefaultFoodBar,
+                "Enable default food bar (true/false)");
+
+            d.guiPlayerHUDOffsetX = config.getInt(
+                "guiPlayerHUDOffsetX",
+                category.getName(),
+                d.guiPlayerHUDOffsetX,
+                0,
+                Integer.MAX_VALUE,
+                "Change X offset of player's HUD");
+
+            d.guiPlayerHUDOffsetY = config.getInt(
+                "guiPlayerHUDOffsetY",
+                category.getName(),
+                d.guiPlayerHUDOffsetY,
+                0,
+                Integer.MAX_VALUE,
+                "Change Y offset of player's HUD");
+
+            d.guiPlayerHUDIsInvert = config.getBoolean(
+                "guiPlayerHUDIsInvert",
+                category.getName(),
+                d.guiPlayerHUDIsInvert,
+                "Change side of player's HUD (true/false)");
+
+            d.guiEnemyHUDOffsetX = config.getInt(
+                "guiEnemyHUDOffsetX",
+                category.getName(),
+                d.guiEnemyHUDOffsetX,
+                0,
+                Integer.MAX_VALUE,
+                "Change X offset of enemy's HUD");
+
+            d.guiEnemyHUDOffsetY = config.getInt(
+                "guiEnemyHUDOffsetY",
+                category.getName(),
+                d.guiEnemyHUDOffsetY,
+                0,
+                Integer.MAX_VALUE,
+                "Change Y offset of enemy's HUD");
+
+            d.guiEnemyHUDIsInvert = config.getBoolean(
+                "guiEnemyHUDIsInvert",
+                category.getName(),
+                d.guiEnemyHUDIsInvert,
+                "Change side of enemy's HUD (true/false)");
+
+            d.guiChargeOffsetX = config.getInt(
+                "guiChargeOffsetX",
+                category.getName(),
+                d.guiChargeOffsetX,
+                0,
+                Integer.MAX_VALUE,
+                "Change X offset of charge bar");
+
+            d.guiChargeOffsetY = config.getInt(
+                "guiChargeOffsetY",
+                category.getName(),
+                d.guiChargeOffsetY,
+                0,
+                Integer.MAX_VALUE,
+                "Change Y offset of charge bar");
+
+            d.guiChargeIsCentered = config.getBoolean(
+                "guiChargeIsCentered",
+                category.getName(),
+                d.guiChargeIsCentered,
+                "Charge bar need centering (true/false)");
+
+            d.guiTwiceHealthManaBar = config.getBoolean(
+                "guiTwiceHealthManaBar",
+                category.getName(),
+                d.guiTwiceHealthManaBar,
+                "Twice health-mana bar (true/false)");
+
+            d.guiDamageForTestArmor = config.getInt(
+                "guiDamageForTestArmor",
+                category.getName(),
+                d.guiDamageForTestArmor,
+                0,
+                Integer.MAX_VALUE,
+                "Default damage value for calculate resistance in armor bar.");
+
+            d.guiDafaultHUDMode = config.getInt(
+                "guiDafaultHUDMode",
+                category.getName(),
+                d.guiDafaultHUDMode,
+                0,
+                3,
+                "Set default HUD mode:\n[0] - normal\n[1] - normal digital\n[2] - simple\n[3] - simple digital\n");
+            GuiMode.set(d.guiDafaultHUDMode);
+
+            d.neiShowShapedRecipe = config.getBoolean(
+                "neiShowShapedRecipe",
+                category.getName(),
+                d.neiShowShapedRecipe,
+                "Is show default recipes in RPG workbench (need NEI) (true/false)");
+
+            d.showDamageParticles = config
+                .getBoolean("Show Damage Particles", Configuration.CATEGORY_GENERAL, true, "Show Damage Indicators");
+            d.showAlways = config.getBoolean(
+                "Show Always Particles",
+                Configuration.CATEGORY_GENERAL,
+                false,
+                "Show Always The Damage Particles");
+            d.size2 = config
+                .get(Configuration.CATEGORY_GENERAL, "Particles Size", d.size2, "Particles Size [default: 3.0]")
+                .getDouble();
+            d.healColor = mapColor(
+                config.getString(
+                    "Heal Color",
+                    Configuration.CATEGORY_GENERAL,
+                    "GREEN",
+                    "Heal Text Color",
+                    d.acceptedColors));
+            d.damageColor = mapColor(
+                config.getString(
+                    "Damage Color",
+                    Configuration.CATEGORY_GENERAL,
+                    "RED",
+                    "Damage Text Color",
+                    d.acceptedColors));
+
+            save();
+        }
+
+        @Override
+        public void createTransferData() {
+            transferData = Utils.serialize(d);
+        }
+
+        @Override
+        public void extractTransferData(byte[] transferData) {
+            d = Utils.deserialize(transferData);
+        }
+
+        private static int mapColor(String color) {
+            switch (color) {
+                case "RED":
+                    return 0xff0000;
+                case "GREEN":
+                    return 0x00ff00;
+                case "BLUE":
+                    return 0x0000ff;
+                case "YELLOW":
+                    return 0xffff00;
+                case "ORANGE":
+                    return 0xffa500;
+                case "BLACK":
+                    return 0x000000;
+                case "PURPLE":
+                    return 0x960096;
+                default:
+                    return 0xffffff;
+            }
+        }
+    }
 
     public static class ItemConfig extends RPGConfigCommon {
 
+        public static class Data implements Serializable {
 
-        public static HashSet<String> activeRPGItems = new HashSet<>();
+            public boolean isAllItemsRPGable = true;
+            public boolean canUpInTable = true;
+            public int maxLevel = 15;
+            public int startMaxExp = 100;
+            public float expMul = 1.20f;
+
+            public int gemStartLvl = 5;
+            public int gemLvlUpStep = 5;
+        }
+
+        public static Data d = new Data();
+
+        public static HashSet<String> activeRPGItems = new HashSet<String>();
 
         public ItemConfig(String fileName) {
             super(fileName);
+        }
+
+        @Override
+        protected void init() {
+            category.setComment(
+                "FAQ:\n" + "Q: How do activate RPG item?\n"
+                    + "A: Take name of item frome the 'itemList' and put it to the 'activeRPGItems' list.\n"
+                    + "Or you can enable flag 'isAllItemsRPGable' for active all items.\n"
+                    + "\n"
+                    + "Q: How do congigure any item?\n"
+                    + "A: Take name of item frome the 'itemList' and put it to the 'needCustomSetting' list.\n"
+                    + "After this, run the game, exit from game and reopen this config.\n"
+                    + "You be able find generated element for configure that item.");
+
+            save();
+        }
+
+        @Override
+        public void load() {
+            d.isAllItemsRPGable = config.getBoolean(
+                "isAllItemsRPGable",
+                category.getName(),
+                d.isAllItemsRPGable,
+                "All weapons, tools , armors are RPGable (dangerous) (true/false)");
+
+            d.canUpInTable = config.getBoolean(
+                "canUpInTable",
+                category.getName(),
+                d.canUpInTable,
+                "Items can be upgrade in LevelUp Table without creative mode (true/false) \nLevelUp Table is invisible now");
+
+            d.maxLevel = config
+                .getInt("maxLevel", category.getName(), d.maxLevel, 1, Integer.MAX_VALUE, "Set max level of RPG items");
+
+            d.startMaxExp = config.getInt(
+                "startMaxExp",
+                category.getName(),
+                d.startMaxExp,
+                0,
+                Integer.MAX_VALUE,
+                "Set start needed expirience for RPG items");
+
+            d.expMul = config.getFloat(
+                "expMul",
+                category.getName(),
+                d.expMul,
+                0f,
+                Float.MAX_VALUE,
+                "Set expirience multiplier for RPG items");
+
+            d.gemStartLvl = config.getInt(
+                "gemStartLvl",
+                category.getName(),
+                d.gemStartLvl,
+                1,
+                Integer.MAX_VALUE,
+                "Set default start gem's level");
+
+            d.gemLvlUpStep = config.getInt(
+                "gemLvlUpStep",
+                category.getName(),
+                d.gemLvlUpStep,
+                1,
+                Integer.MAX_VALUE,
+                "Set default level up gem's step");
+
+            save();
+        }
+
+        @Override
+        public void postLoadPre() {
+            ArrayList<String> names = RPGHelper.getItemNames(RPGCapability.rpgItemRegistr.keySet(), true, false);
+            Property prop = getPropertyStrings(
+                "activeRPGItems",
+                names.toArray(new String[names.size()]),
+                "Set active RPG items (activated if 'isAllItemsRPGable' is false) (true/false)",
+                false);
+            if (!d.isAllItemsRPGable) {
+                activeRPGItems = new HashSet<String>(Arrays.asList(prop.getStringList()));
+            }
+
+            save();
         }
 
         @Override
@@ -112,28 +476,18 @@ public class RPGConfig {
             ArrayList<String> names = RPGHelper.getItemNames(map.keySet(), true, false);
             getPropertyStrings(
                 "activeRPGItems",
-                names.toArray(new String[0]),
+                names.toArray(new String[names.size()]),
                 "Set active RPG items (activated if 'isAllItemsRPGable' is false) (true/false)",
                 true);
 
             names = RPGHelper.getItemNames(RPGCapability.rpgItemRegistr.keySet(), true, true);
             getPropertyStrings(
                 "itemList",
-                names.toArray(new String[0]),
+                names.toArray(new String[names.size()]),
                 "List of all items, which can be RPGable",
                 true);
 
             save();
-        }
-
-        @Override
-        public void createTransferData() {
-
-        }
-
-        @Override
-        public void extractTransferData(byte[] transferData) {
-
         }
 
         protected void customConfig(HashMap<Item, RPGItemData> map) {
@@ -144,7 +498,7 @@ public class RPGConfig {
                 new String[] { Items.diamond_sword.delegate.name() },
                 "Set items, which needs customization",
                 true);
-            HashSet<String> needCustomSetting = new HashSet<>(Arrays.asList(prop.getStringList()));
+            HashSet<String> needCustomSetting = new HashSet<String>(Arrays.asList(prop.getStringList()));
 
             if (!needCustomSetting.isEmpty()) {
                 for (Entry<Item, RPGItemData> item : map.entrySet()) {
@@ -210,6 +564,16 @@ public class RPGConfig {
             prop.set(defStr);
             return attr.getValue().mul;
         }
+
+        @Override
+        public void createTransferData() {
+            transferData = Utils.serialize(d);
+        }
+
+        @Override
+        public void extractTransferData(byte[] transferData) {
+            d = Utils.deserialize(transferData);
+        }
     }
 
     public static class EntityConfig extends RPGConfigCommon {
@@ -231,7 +595,7 @@ public class RPGConfig {
 
         public static Data d = new Data();
 
-        public static HashSet<String> activeRPGEntities = new HashSet<>();
+        public static HashSet<String> activeRPGEntities = new HashSet<String>();
 
         public EntityConfig(String fileName) {
             super(fileName);
@@ -330,11 +694,11 @@ public class RPGConfig {
             ArrayList<String> names = RPGHelper.getEntityNames(RPGCapability.rpgEntityRegistr.keySet(), true);
             Property prop = getPropertyStrings(
                 "activeRPGEntities",
-                names.toArray(new String[0]),
+                names.toArray(new String[names.size()]),
                 "Set active RPG entities (activated if 'isAllEntitiesRPGable' is false) (true/false)",
                 false);
             if (!d.isAllEntitiesRPGable) {
-                activeRPGEntities = new HashSet<>(Arrays.asList(prop.getStringList()));
+                activeRPGEntities = new HashSet<String>(Arrays.asList(prop.getStringList()));
             }
             save();
         }
@@ -394,7 +758,7 @@ public class RPGConfig {
                 new String[] { (String) EntityList.classToStringMapping.get(EntityZombie.class) },
                 "Set entities, which needs customization",
                 true);
-            HashSet<String> needCustomSetting = new HashSet<>(Arrays.asList(prop.getStringList()));
+            HashSet<String> needCustomSetting = new HashSet<String>(Arrays.asList(prop.getStringList()));
 
             if (!needCustomSetting.isEmpty()) {
                 String entityName;
@@ -448,6 +812,79 @@ public class RPGConfig {
         }
     }
 
+    public static class MixinConfig extends RPGConfigCommon {
+
+        public static class Data implements Serializable {
+
+            public boolean enableMixinRenderLiving = true, enableVanillaArrowReplacement = true
+                , enableArmorSystemReplacement = true, enableBowSystem = true, enableItemSystem = true, enableEntityTweaking = true;
+        }
+
+        public static Data d = new Data();
+
+        public MixinConfig(String fileName) {
+            super(fileName);
+        }
+
+        @Override
+        protected void init() {
+            category.setComment(
+                "FAQ:\n" + "This config file contains configuration for mixins.\n");
+            save();
+        }
+
+        @Override
+        public void load() {
+            d.enableMixinRenderLiving = config.getBoolean(
+                "enableMixinRenderLiving",
+                category.getName(),
+                d.enableMixinRenderLiving,
+                "Fix issues between Danger Rpg Gui and Optifine shaders (No Wiki)");
+
+            d.enableVanillaArrowReplacement = config.getBoolean(
+                "enableVanillaArrowReplacement",
+                category.getName(),
+                d.enableVanillaArrowReplacement,
+                "Enable Vanilla Arrow Replacement (No Wiki)");
+
+            d.enableArmorSystemReplacement = config.getBoolean(
+                "enableArmorSystemReplacement",
+                category.getName(),
+                d.enableArmorSystemReplacement,
+                "Enable Armor System Replacement (No Wiki)");
+
+            d.enableBowSystem = config.getBoolean(
+                "enableBowSystem",
+                category.getName(),
+                d.enableBowSystem,
+                "Enable Bow System Replacement (No Wiki)");
+
+            d.enableItemSystem = config.getBoolean(
+                "enableItemSystem",
+                category.getName(),
+                d.enableItemSystem,
+                "Enable Item System Replacement (No Wiki)");
+
+            d.enableEntityTweaking = config.getBoolean(
+                "enableEntityTweaking",
+                category.getName(),
+                d.enableEntityTweaking,
+                "Enable Entity Tweaking (No Wiki)");
+
+            save();
+        }
+
+        @Override
+        public void createTransferData() {
+            transferData = Utils.serialize(d);
+        }
+
+        @Override
+        public void extractTransferData(byte[] transferData) {
+            d = Utils.deserialize(transferData);
+        }
+    }
+
     public abstract static class RPGConfigCommon {
 
         protected Configuration config;
@@ -483,7 +920,7 @@ public class RPGConfig {
         public abstract void extractTransferData(byte[] transferData);
 
         protected Property getPropertyStrings(String categoryName, String[] defValue, String comment,
-            boolean needClear) {
+                                              boolean needClear) {
             ConfigCategory cat = config.getCategory(categoryName);
             if (needClear) {
                 cat.clear();

@@ -1,11 +1,10 @@
 package mixac1.dangerrpg.capability.ia;
 
-import mixac1.dangerrpg.config.DangerConfig;
+import mixac1.dangerrpg.init.RPGConfig;
 import net.minecraft.item.ItemStack;
 
 import mixac1.dangerrpg.api.item.IADynamic;
 import mixac1.dangerrpg.init.RPGCapability;
-import mixac1.dangerrpg.init.RPGConfig.ItemConfig;
 import mixac1.dangerrpg.util.Utils;
 
 public class IALevel extends IADynamic {
@@ -16,11 +15,11 @@ public class IALevel extends IADynamic {
 
     @Override
     public boolean isValid(float value) {
-        return super.isValid(value) && value <= DangerConfig.maxLevel;
+        return super.isValid(value) && value <= RPGConfig.ItemConfig.d.maxLevel;
     }
 
     public boolean isMax(ItemStack stack) {
-        return getChecked(stack) >= DangerConfig.maxLevel;
+        return getChecked(stack) >= RPGConfig.ItemConfig.d.maxLevel;
     }
 
     @Override
@@ -31,6 +30,6 @@ public class IALevel extends IADynamic {
                 RPGCapability.rpgItemRegistr.get(stack.getItem()).attributes.get(this)
                     .up(get(stack)),
                 1,
-                DangerConfig.maxLevel));
+                RPGConfig.ItemConfig.d.maxLevel));
     }
 }
