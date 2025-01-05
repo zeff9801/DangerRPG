@@ -20,6 +20,7 @@ public class CatConfig {
     private final List<String> categories;
     protected static String CONFIG_VERSION = "1.0";
     private static final String VERSION_KEY = "config.version";
+    protected String config_comment_header;
 
     public CatConfig(String folderName, List<String> categories) {
         if (categories == null || categories.isEmpty()) {
@@ -29,6 +30,10 @@ public class CatConfig {
         this.configFolder = new File(new File(Loader.instance().getConfigDir(), "config"), folderName);
         CatUtils.createDirectoryIfNotExists(configFolder);
         registerProperties();
+    }
+
+    protected void setConfigCommentHeader(String comment){
+        this.config_comment_header = comment;
     }
 
     public void loadConfig() {
@@ -45,7 +50,12 @@ public class CatConfig {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(configFile))) {
                 writer.write("# " + category + " Configuration\n");
                 writer.write("# " + new Date() + "\n");
-                writer.write("# THIS CONFIG FILE IS IN ALPHA VERSION\n");
+                writer.write("\n");
+                if (!config_comment_header.isEmpty()) {
+                    writer.write("#########################################################################################################\n");
+                    writer.write(addHashesToLines(config_comment_header));
+                    writer.write("#########################################################################################################\n");
+                }
                 writer.write(VERSION_KEY + "=" + CONFIG_VERSION + "\n");
                 pM.properties.forEach((key, value) -> {
                     String keyString = key.toString();
@@ -78,6 +88,17 @@ public class CatConfig {
             pM.loadValues();
             updateStaticFields(category);
         }
+    }
+
+    private static String addHashesToLines(String text) {
+        StringBuilder result = new StringBuilder();
+        String[] lines = text.split("\n");
+
+        for (String line : lines) {
+            result.append("# ").append(line).append("\n");
+        }
+
+        return result.toString();
     }
 
     public void saveConfigForKey(String category, String key, String value) {

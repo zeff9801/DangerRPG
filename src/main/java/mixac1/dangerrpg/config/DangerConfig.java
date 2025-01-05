@@ -11,20 +11,23 @@ public class DangerConfig extends CatConfig {
     public static boolean enableBowSystem = true;
     public static boolean enableItemSystem = true;
     public static boolean enableEntityTweaking = true;
-    private static final String MAIN_CATEGORY = "Main";
+    private static final String MIXIN_CATEGORY = "Mixin";
 
     public DangerConfig(String folderName) {
-        super(folderName, Arrays.asList(MAIN_CATEGORY));
+        super(folderName, Arrays.asList(MIXIN_CATEGORY));
         CONFIG_VERSION = "2.1";
+        this.config_comment_header =   "GENERAL INFO:\n" + "\n"
+            + "This config file contain config for mixins configurations\n"
+            + "\n";
     }
 
     @Override
     protected void registerProperties() {
-        pM.registerProperty(MAIN_CATEGORY, "enableMixinRenderLiving", enableMixinRenderLiving, "Fix issues between Danger Rpg Gui and Optifine shaders (No Wiki)");
-        pM.registerProperty(MAIN_CATEGORY, "enableVanillaArrowReplacement", enableVanillaArrowReplacement, "Enable Vanilla Arrow/Throw/Projectile Replacement (No Wiki)");
-        pM.registerProperty(MAIN_CATEGORY, "enableArmorSystemReplacement", enableArmorSystemReplacement, "Enable Armor System Replacement (No Wiki)");
-        pM.registerProperty(MAIN_CATEGORY, "enableBowSystem", enableBowSystem, "Enable Bow System Replacement (No Wiki)");
-        pM.registerProperty(MAIN_CATEGORY, "enableItemSystem", enableItemSystem, "Enable Item System Replacement (No Wiki)");
-        pM.registerProperty(MAIN_CATEGORY, "enableEntityTweaking", enableEntityTweaking, "Enable Entity Tweaking (No Wiki)");
+        pM.registerProperty(MIXIN_CATEGORY, "enableMixinRenderLiving", enableMixinRenderLiving, "Fix issues between Danger Rpg Gui and Optifine shaders (No Wiki)");
+        pM.registerProperty(MIXIN_CATEGORY, "enableVanillaArrowReplacement", enableVanillaArrowReplacement, "Enable Vanilla Arrow/Throw/Projectile Replacement (No Wiki)");
+        pM.registerProperty(MIXIN_CATEGORY, "enableArmorSystemReplacement", enableArmorSystemReplacement, "Enable Armor System Replacement (No Wiki)");
+        pM.registerProperty(MIXIN_CATEGORY, "enableBowSystem", enableBowSystem, "Enable Bow System Replacement (No Wiki)");
+        pM.registerProperty(MIXIN_CATEGORY, "enableItemSystem", enableItemSystem, "Enable Item System Replacement (No Wiki)");
+        pM.registerProperty(MIXIN_CATEGORY, "enableEntityTweaking", enableEntityTweaking, "Enable Entity Tweaking (No Wiki)");
     }
 }
