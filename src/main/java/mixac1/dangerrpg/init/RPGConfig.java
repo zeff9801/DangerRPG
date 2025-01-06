@@ -528,7 +528,7 @@ public class RPGConfig {
 
         public static class Data implements Serializable {
 
-            public boolean enableMixinRenderLiving = true, enableVanillaArrowReplacement = true
+            public boolean enableVanillaArrowReplacement = true
                 , enableArmorSystemReplacement = true, enableBowSystem = true, enableItemSystem = true, enableEntityTweaking = true;
         }
 
@@ -546,7 +546,6 @@ public class RPGConfig {
 
         @Override
         public void load() {
-            d.enableMixinRenderLiving = config.getBoolean("enableMixinRenderLiving", category.getName(), d.enableMixinRenderLiving, "Fix issues between Danger Rpg Gui and Optifine shaders (No Wiki)");
             d.enableVanillaArrowReplacement = config.getBoolean("enableVanillaArrowReplacement", category.getName(), d.enableVanillaArrowReplacement, "Enable Vanilla Arrow Replacement (No Wiki)");
             d.enableArmorSystemReplacement = config.getBoolean("enableArmorSystemReplacement", category.getName(), d.enableArmorSystemReplacement, "Enable Armor System Replacement (No Wiki)");
             d.enableBowSystem = config.getBoolean("enableBowSystem", category.getName(), d.enableBowSystem, "Enable Bow System Replacement (No Wiki)");
