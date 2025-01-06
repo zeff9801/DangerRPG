@@ -45,7 +45,7 @@ public class ClientProxy extends CommonProxy {
 
     private void displayParticle(EntityLivingBase entity, int damage) {
         if (damage == 0
-            || (!entity.canEntityBeSeen(Minecraft.getMinecraft().thePlayer) && !RPGConfig.ClientConfig.d.showAlways))
+            || (!entity.canEntityBeSeen(Minecraft.getMinecraft().thePlayer) && !RPGConfig.ClientConfig.d.enableParticles))
             return;
 
         World world = entity.worldObj;

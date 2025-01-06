@@ -21,7 +21,7 @@ public class DamageParticles extends EntityFX {
     private static final float GRAVITY = 0.1F;
     private static final int LIFESPAN = 12;
     private static final double PARTICLE_SCALE_FACTOR = 0.008D;
-    private static final double MAX_PARTICLE_SCALE = RPGConfig.ClientConfig.Data.size2 * 3.0D;
+    private static final double MAX_PARTICLE_SCALE = RPGConfig.ClientConfig.d.size2 * 3.0D;
 
     private final String text;
     private final int damage;
@@ -33,14 +33,10 @@ public class DamageParticles extends EntityFX {
         particleTextureJitterX = 0.0F;
         particleTextureJitterY = 0.0F;
         particleGravity = GRAVITY;
-        particleScale = (float) RPGConfig.ClientConfig.Data.size2;
+        particleScale = (float) RPGConfig.ClientConfig.d.size2;
         particleMaxAge = LIFESPAN;
         this.damage = damage;
         this.text = Integer.toString(Math.abs(damage));
-    }
-
-    protected DamageParticles(World worldIn, double posXIn, double posYIn, double posZIn) {
-        this(0, worldIn, posXIn, posYIn, posZIn, 0, 0, 0);
     }
 
     @Override
@@ -75,7 +71,7 @@ public class DamageParticles extends EntityFX {
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-        int color = damage < 0 ? RPGConfig.ClientConfig.Data.healColor : RPGConfig.ClientConfig.Data.damageColor;
+        int color = damage < 0 ? RPGConfig.ClientConfig.d.healColor : RPGConfig.ClientConfig.d.damageColor;
         final FontRenderer fontRenderer = mc.fontRenderer;
         fontRenderer.drawStringWithShadow(
             text,

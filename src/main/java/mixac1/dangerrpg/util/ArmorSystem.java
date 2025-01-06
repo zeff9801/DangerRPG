@@ -2,7 +2,6 @@ package mixac1.dangerrpg.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import mixac1.dangerrpg.DangerRPG;
 import mixac1.dangerrpg.init.RPGConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
@@ -51,12 +50,12 @@ public class ArmorSystem {
             mc.thePlayer.inventory.armorInventory,
             source,
             damage);
-        if (list.size() > 0) {
-            ArmorProperties[] props = list.toArray(new ArmorProperties[list.size()]);
+        if (!list.isEmpty()) {
+            ArmorProperties[] props = list.toArray(new ArmorProperties[0]);
             standardizeList(props, damage);
 
             for (ArmorProperties prop : props) {
-                value += prop.AbsorbRatio;
+                value += (float) prop.AbsorbRatio;
             }
         }
 
@@ -103,14 +102,14 @@ public class ArmorSystem {
             return new ArmorProperties(
                 0,
                 getArmorValue(stack, source) / 100,
-                ((ItemArmor) stack.getItem()).getMaxDamage() + 1 - stack.getItemDamage());
+                stack.getItem().getMaxDamage() + 1 - stack.getItemDamage());
         }
         return null;
     }
 
     public static ArrayList<ArmorProperties> getArrayArmorProperties(EntityLivingBase entity, ItemStack[] inventory,
                                                                      DamageSource source, double damage) {
-        ArrayList<ArmorProperties> dmgVals = new ArrayList<ArmorProperties>();
+        ArrayList<ArmorProperties> dmgVals = new ArrayList<>();
 
         for (int x = 0; x < inventory.length; x++) {
             ItemStack stack = inventory[x];
