@@ -45,45 +45,12 @@ public class RPGGuiIngame extends Gui {
         DangerRPG.MODID,
         "textures/gui/gui_in_game.png");
 
-    private int part1X;
-    private int part1Y;
-    private int part1U;
-    private int part1V;
-    private int part1Width;
-    private int part1H;
-
-    private int part2X;
-    private int part2Y;
-    private int part2U;
-    private int part2V;
-    private int part2W;
-    private int part2H;
-
-    private int part3X;
-    private int part3Y;
-    private int part3U;
-    private int part3V;
-    private int part3W;
-    private int part3H;
-
-    private int barIconX;
-    private int barIconY;
-    private int barIconW;
-    private int barIconH;
-    private int barIconU;
-    private int barIconV;
-
-    private int barX;
-    private int barY;
-    private int barW;
-    private int barH;
-    private int barU;
-    private int barV;
-
-    private int chargeW;
-    private int chargeH;
-    private int chargeU;
-    private int chargeV;
+    private int part1X,part1Y,part1U,part1V,part1Width,part1H;
+    private int part2X,part2Y,part2U,part2V,part2W,part2H;
+    private int part3X,part3Y,part3U,part3V,part3W,part3H;
+    private int barIconX,barIconY,barIconW,barIconH,barIconU,barIconV;
+    private int barX,barY,barW,barH,barU,barV;
+    private int chargeW,chargeH,chargeU,chargeV;
 
     private GuiModeType mode;
 
