@@ -115,14 +115,11 @@ public class RPGGuiIngame extends Gui {
     }
 
     public void renderGameOverlay(ScaledResolution res) {
-        mc.mcProfiler.startSection("rpgBar");
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
-
         int width = res.getScaledWidth();
         int height = res.getScaledHeight();
-
         renderEntityBar(
             mc.thePlayer,
             RPGConfig.ClientConfig.d.guiPlayerHUDOffsetX,
@@ -133,11 +130,9 @@ public class RPGGuiIngame extends Gui {
             RPGConfig.ClientConfig.d.guiChargeIsCentered ? (width - chargeW) / 2 : RPGConfig.ClientConfig.d.guiChargeOffsetX,
             height - RPGConfig.ClientConfig.d.guiChargeOffsetY);
         renderEnemyBar(RPGConfig.ClientConfig.d.guiEnemyHUDOffsetX, RPGConfig.ClientConfig.d.guiEnemyHUDOffsetY, res);
-
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glPopMatrix();
-        mc.mcProfiler.endSection();
     }
 
     private void renderEntityBar(EntityLivingBase entity, int offsetX, int offsetY, boolean isInverted,
