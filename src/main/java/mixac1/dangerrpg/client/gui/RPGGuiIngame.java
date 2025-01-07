@@ -125,7 +125,7 @@ public class RPGGuiIngame extends Gui {
 
         renderEntityBar(
             mc.thePlayer,
-            RPGConfig.ClientConfig.d.guiChargeOffsetX,
+            RPGConfig.ClientConfig.d.guiPlayerHUDOffsetX,
             RPGConfig.ClientConfig.d.guiPlayerHUDOffsetY,
             !RPGConfig.ClientConfig.d.guiEntityHudInvert,
             res);
