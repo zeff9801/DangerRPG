@@ -137,7 +137,8 @@ public class RPGGuiIngame extends Gui {
 
     private void renderEntityBar(EntityLivingBase entity, int offsetX, int offsetY, boolean isInverted,
         ScaledResolution res) {
-        if (entity instanceof EntityPlayer){
+        boolean isPlayer = entity instanceof EntityPlayer;
+        if (isPlayer){
             isInverted = !isInverted;
         }
         this.isInvert = isInverted;
@@ -180,9 +181,7 @@ public class RPGGuiIngame extends Gui {
             }
         }
 
-        if (!(entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isCreativeMode)) {
-
-            boolean isPlayer = entity instanceof EntityPlayer;
+        if (!(isPlayer && ((EntityPlayer) entity).capabilities.isCreativeMode)) {
             boolean hasMeleeDamage = iRPG != null && (iRPG.getEAMeleeDamage(entity) != null || isPlayer);
             boolean hasRangeDamage = iRPG != null && iRPG.getEARangeDamage(entity) != null;
             boolean hasFood = !RPGConfig.ClientConfig.d.guiEnableDefaultFoodBar && entity == mc.thePlayer
