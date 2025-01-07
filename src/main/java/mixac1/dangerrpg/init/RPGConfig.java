@@ -147,8 +147,8 @@ public class RPGConfig {
 
         public static class Data implements Serializable {
 
-            public boolean guiEnableHUD = true,guiChargeIsCentered = true,guiEnemyHUDIsInvert;
-            public boolean guiEnableDefaultFoodBar = false,guiPlayerHUDIsInvert = false,guiTwiceHealthManaBar = false;
+            public boolean guiEnableHUD = true,guiChargeIsCentered = true;
+            public boolean guiEnableDefaultFoodBar = false,guiEntityHudInvert = false,guiTwiceHealthManaBar = false;
             public int guiPlayerHUDOffsetX = 10,guiPlayerHUDOffsetY = 10,guiEnemyHUDOffsetX = 10,guiEnemyHUDOffsetY = 10;
             public int guiChargeOffsetX = 0,guiChargeOffsetY = 45,guiDafaultHUDMode = 1,guiDamageForTestArmor = 25;
             public boolean neiShowShapedRecipe = false;
@@ -172,10 +172,9 @@ public class RPGConfig {
             d.guiEnableDefaultFoodBar = config.getBoolean("guiEnableDefaultFoodBar", category.getName(), d.guiEnableDefaultFoodBar, "Enable default food bar (true/false)");
             d.guiPlayerHUDOffsetX = config.getInt("guiPlayerHUDOffsetX", category.getName(), d.guiPlayerHUDOffsetX, 0, Integer.MAX_VALUE, "Change X offset of player's HUD");
             d.guiPlayerHUDOffsetY = config.getInt("guiPlayerHUDOffsetY", category.getName(), d.guiPlayerHUDOffsetY, 0, Integer.MAX_VALUE, "Change Y offset of player's HUD");
-            d.guiPlayerHUDIsInvert = config.getBoolean("guiPlayerHUDIsInvert", category.getName(), d.guiPlayerHUDIsInvert, "Change side of player's HUD (true/false)");
+            d.guiEntityHudInvert = config.getBoolean("guiEntityHudInvert", category.getName(), d.guiEntityHudInvert, "Change side between player's and Entity HUD (true/false)");
             d.guiEnemyHUDOffsetX = config.getInt("guiEnemyHUDOffsetX", category.getName(), d.guiEnemyHUDOffsetX, 0, Integer.MAX_VALUE, "Change X offset of enemy's HUD");
             d.guiEnemyHUDOffsetY = config.getInt("guiEnemyHUDOffsetY", category.getName(), d.guiEnemyHUDOffsetY, 0, Integer.MAX_VALUE, "Change Y offset of enemy's HUD");
-            d.guiEnemyHUDIsInvert = config.getBoolean("guiEnemyHUDIsInvert", category.getName(), d.guiEnemyHUDIsInvert, "Change side of enemy's HUD (true/false)");
             d.guiChargeOffsetX = config.getInt("guiChargeOffsetX", category.getName(), d.guiChargeOffsetX, 0, Integer.MAX_VALUE, "Change X offset of charge bar");
             d.guiChargeOffsetY = config.getInt("guiChargeOffsetY", category.getName(), d.guiChargeOffsetY, 0, Integer.MAX_VALUE, "Change Y offset of charge bar");
             d.guiChargeIsCentered = config.getBoolean("guiChargeIsCentered", category.getName(), d.guiChargeIsCentered, "Charge bar need centering (true/false)");

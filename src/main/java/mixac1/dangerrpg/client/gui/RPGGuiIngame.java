@@ -127,7 +127,7 @@ public class RPGGuiIngame extends Gui {
             mc.thePlayer,
             RPGConfig.ClientConfig.d.guiChargeOffsetX,
             RPGConfig.ClientConfig.d.guiPlayerHUDOffsetY,
-            RPGConfig.ClientConfig.d.guiPlayerHUDIsInvert,
+            !RPGConfig.ClientConfig.d.guiEntityHudInvert,
             res);
         renderChargeBar(
             RPGConfig.ClientConfig.d.guiChargeIsCentered ? (width - chargeW) / 2 : RPGConfig.ClientConfig.d.guiChargeOffsetX,
@@ -142,8 +142,10 @@ public class RPGGuiIngame extends Gui {
 
     private void renderEntityBar(EntityLivingBase entity, int offsetX, int offsetY, boolean isInverted,
         ScaledResolution res) {
+        if (entity instanceof EntityPlayer){
+            isInverted = !isInverted;
+        }
         this.isInvert = isInverted;
-
         if (isInverted) {
             offsetX = res.getScaledWidth() - offsetX;
         }
@@ -668,11 +670,11 @@ public class RPGGuiIngame extends Gui {
                         (EntityDragon) ((EntityDragonPart) mop.entityHit).entityDragonObj,
                         offsetX,
                         offsetY,
-                        true,
+                        !RPGConfig.ClientConfig.d.guiEntityHudInvert,
                         res);
                 }
             } else if (mop.entityHit instanceof EntityLivingBase) {
-                renderEntityBar((EntityLivingBase) mop.entityHit, offsetX, offsetY, true, res);
+                renderEntityBar((EntityLivingBase) mop.entityHit, offsetX, offsetY, !RPGConfig.ClientConfig.d.guiEntityHudInvert, res);
             }
         }
     }
