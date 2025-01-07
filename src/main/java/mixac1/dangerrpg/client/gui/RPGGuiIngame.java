@@ -192,9 +192,7 @@ public class RPGGuiIngame extends Gui {
                 .getAir() < 300;
 
             int offsetHealth;
-            int offsetMana = 0;
-            int offsetMeleeDmg = 0;
-            int offsetRangeDmg = 0;
+            int offsetMana = 0,offsetMeleeDmg = 0,offsetRangeDmg = 0;
 
             if (isPlayer && RPGConfig.ClientConfig.d.guiTwiceHealthManaBar) {
                 drawTexturedModalRect(
